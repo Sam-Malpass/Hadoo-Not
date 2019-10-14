@@ -26,4 +26,5 @@ public abstract class Job {
      * @return a list of Objects that accurately represent the data in the system
      */
     public abstract ArrayList<Object> preprocess(ArrayList<String> input);
+
 }
