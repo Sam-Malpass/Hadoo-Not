@@ -7,10 +7,12 @@
 package mapReduce;
 
 public class Tuple {
+
     /**
      * key holds the key part of the Tuple
      */
     private Object key;
+    
     /**
      * value holds the value part of the tuple
      */
