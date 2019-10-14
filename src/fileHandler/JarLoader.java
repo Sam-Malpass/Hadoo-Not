@@ -6,7 +6,10 @@
  */
 package fileHandler;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -50,5 +53,29 @@ public class JarLoader {
         return classes;
     }
 
-    public
+    /**
+     * Function createObject()
+     * <p>
+     *     Attempts to create an object of a class from an external class
+     * </p>
+     * @param jarName is the JAR file
+     * @param className is the name of the class
+     * @return the object
+     */
+    public Object createObject(String jarName, String className) {
+        File jarFile = new File(jarName);
+        Object instance = null;
+        try {
+            URL jarPath = jarFile.toURI().toURL();
+            String jarURL = "jar:"+jarPath+"!/";
+            URL urls[] = {new URL(jarURL)};
+            URLClassLoader child = new URLClassLoader(urls);
+            Class load = Class.forName(className, true, child);
+            instance = load.newInstance();
+        }
+        catch (Exception e) {
+            System.err.println("[ERROR] Issue loading class " + className + " from JAR file " + jarName);
+        }
+        return instance;
+    }
 }
