@@ -9,6 +9,8 @@ package application;
 import mapReduce.Node;
 import mapReduce.Tuple;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Process {
 
@@ -70,5 +72,24 @@ public class Process {
             chunks.add(chunk);
         }
         return chunks;
+    }
+
+    /**
+     * Function shuffle()
+     * <p>
+     *     Collects all the map outputs across all mapperNodes and then sorts them all by key
+     * </p>
+     */
+    private void shuffle() {
+        for(Node n : mapperNodes) {
+            ArrayList<Tuple> mapperOutput = n.getMapperOutput();
+            shuffledOutput.addAll(mapperOutput);
+        }
+        Collections.sort(shuffledOutput, new Comparator<Tuple>() {
+            @Override
+            public int compare(Tuple o1, Tuple o2) {
+                return o1.getKey().toString().compareToIgnoreCase(o2.getKey().toString());
+            }
+        });
     }
 }
