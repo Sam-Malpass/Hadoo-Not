@@ -52,6 +52,9 @@ public class Process {
      */
     private FileHandler fileHandler;
 
+    /**
+     * task holds the Job to be used
+     */
     private static Job task;
 
     /**
