@@ -27,4 +27,13 @@ public abstract class Job {
      */
     public abstract ArrayList<Object> preprocess(ArrayList<String> input);
 
+    /**
+     * Function map()
+     * <p>
+     *     User can define how to perform the map task for given data entries to return a list of Tuples
+     * </p>
+     * @param input are the data entries to be mapped
+     * @return a list of Tuples
+     */
+    public abstract ArrayList<Tuple> map(ArrayList<Object> input);
 }
