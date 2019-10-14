@@ -6,8 +6,12 @@
  */
 package application;
 
+import fileHandler.FileHandler;
+import mapReduce.Job;
 import mapReduce.Node;
 import mapReduce.Tuple;
+
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,6 +47,11 @@ public class Process {
      * finalOutput holds the results from the reduce Nodes
      */
     private ArrayList<Tuple> finalOutput = new ArrayList<>();
+
+    /**
+     * fileHandler gives access to file reading/writing functions
+     */
+    private FileHandler fileHandler;
 
     /**
      * Constructor with arguments
@@ -92,4 +101,38 @@ public class Process {
             }
         });
     }
+
+    private ArrayList<String> readData(String filePath) {
+
+    }
+
+    public void start(String inputPath, String outputPath) {
+        /* SETUP JOB */
+        try {
+            Class cls = Class.forName(jobName);
+            ClassLoader cLoader = cls.getClassLoader();
+            Class cls2 = Class.forName(jobName, true, cLoader);
+            Constructor<Job> constructor = cls2.getConstructor();
+            Job task = constructor.newInstance();
+            Node.setup(task);
+        }
+        catch (Exception e) {
+            System.err.println("[ERROR] Could not instantiate object for: " + jobName);
+            return;
+        }
+        /* READ IN */
+
+        /* PREPROCESS */
+
+        /* SPLIT */
+
+        /* MAP */
+
+        /* SHUFFLE/SORT */
+
+        /* REDUCE */
+
+        /* OUTPUT */
+    }
 }
+
