@@ -68,6 +68,19 @@ public class Node implements Runnable {
     }
 
     /**
+     * Function start()
+     * <p>
+     *     Starts the thread
+     * </p>
+     */
+    public void start() {
+        if(thread == null) {
+            thread = new Thread(this, threadID);
+            thread.start();
+        }
+    }
+
+    /**
      * Function run()
      * <p>
      *     Executes the map or reduce task based on the mode the Node is in
