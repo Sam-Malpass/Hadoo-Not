@@ -7,4 +7,13 @@
 package application;
 
 public class Main {
+
+    /**
+     * Function main()
+     * <p>
+     *     Entry point for application
+     * </p>
+     * @param args passed arguments
+     */
+    public static void main(String[] args) {}
 }
