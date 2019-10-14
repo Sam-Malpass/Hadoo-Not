@@ -53,6 +53,8 @@ public class Process {
      */
     private FileHandler fileHandler;
 
+    private static Job task;
+
     /**
      * Constructor with arguments
      * <p>
@@ -122,16 +124,20 @@ public class Process {
             ClassLoader cLoader = cls.getClassLoader();
             Class cls2 = Class.forName(jobName, true, cLoader);
             Constructor<Job> constructor = cls2.getConstructor();
-            Job task = constructor.newInstance();
+            Job tmp = constructor.newInstance();
+            task = tmp;
             Node.setup(task);
         }
         catch (Exception e) {
             System.err.println("[ERROR] Could not instantiate object for: " + jobName);
             return;
         }
+
         /* READ IN */
+        ArrayList<String> input = readData(inputPath);
 
         /* PREPROCESS */
+        ArrayList<Object> data = task.preprocess(input);
 
         /* SPLIT */
 
