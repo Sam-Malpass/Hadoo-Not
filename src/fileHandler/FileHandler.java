@@ -6,6 +6,8 @@
  */
 package fileHandler;
 
+import java.util.ArrayList;
+
 public class FileHandler {
 
     /**
@@ -27,5 +29,17 @@ public class FileHandler {
     public FileHandler() {
         this.input = new FileInput();
         this.output = new FileOutput();
+    }
+
+    /**
+     * Function read()
+     * <p>
+     *     Reads and returns a given file's data as an ArrayList of Strings
+     * </p>
+     * @param fileName is the name of the file to read
+     * @return an ArrayList of String which contain the file's contents
+     */
+    public ArrayList<String> read(String fileName) {
+        return this.input.readFile(fileName);
     }
 }
