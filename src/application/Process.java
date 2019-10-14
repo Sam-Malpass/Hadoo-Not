@@ -1,7 +1,7 @@
 /**
  * Process
  * @author Sam Malpass
- * @version 0.0.1
+ * @version 0.0.2
  * @since 0.0.1
  */
 package application;
@@ -10,7 +10,6 @@ import fileHandler.FileHandler;
 import mapReduce.Job;
 import mapReduce.Node;
 import mapReduce.Tuple;
-
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;

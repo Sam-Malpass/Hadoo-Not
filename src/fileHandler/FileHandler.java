@@ -1,7 +1,7 @@
 /**
  * FileHandler
  * @author Sam Malpass
- * @version 0.0.1
+ * @version 0.0.2
  * @since 0.0.0
  */
 package fileHandler;
