@@ -75,7 +75,16 @@ public class Task1 extends Job {
             }
 
             if(!errorFlag) {
-                dataEntries.add(data);
+                boolean tmp = true;
+                for(Object o : dataEntries) {
+                    ArrayList<Object> obj = (ArrayList) o;
+                    if(obj.get(1).equals(data.get(1)) && obj.get(2).equals(data.get(2))) {
+                        tmp = false;
+                    }
+                }
+                if(tmp) {
+                    dataEntries.add(data);
+                }
             }
             else {
                 System.out.println("[WARNING] Data entry number " + input.indexOf(line) + " has following errors: ");
