@@ -1,4 +1,4 @@
 package mapReduce;
 
-public class Pair {
+public class Tuple {
 }
