@@ -30,6 +30,26 @@ public class Node implements Runnable {
     private boolean mode;
 
     /**
+     * input holds the data to be passed to the mapper
+     */
+    private ArrayList<Object> input;
+
+    /**
+     * mapperOutput holds the output from the mapper
+     */
+    private ArrayList<Tuple> mapperOutput = new ArrayList<>();
+
+    /**
+     * key holds the input key for the reducer
+     */
+    private Object key;
+
+    /**
+     * reducerOutput holds the output for the reducer
+     */
+    private Tuple reducerOutput;
+
+    /**
      * task holds the Job to be run
      */
     private static Job task;
@@ -48,9 +68,14 @@ public class Node implements Runnable {
     }
 
 
-    
+
     @Override
     public void run() {
-
+        if(this.mode) {
+            mapperOutput = task.map(input);
+        }
+        else {
+            reducerOutput = task.reduce(key, mapperOutput);
+        }
     }
 }
