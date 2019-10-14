@@ -183,42 +183,54 @@ public class Process {
         ArrayList<String> input = readData(inputPath);
 
         /* PREPROCESS */
+        System.out.println("[PREPROCESSOR] Beginning preprocessing...");
         ArrayList<Object> data = task.preprocess(input);
+        System.out.println("[PREPROCESSOR] Preprocessing complete!\n");
 
         /* SPLIT */
         ArrayList<ArrayList<Object>> dataChunks = split(data);
 
         /* MAP */
+        System.out.println("[MAPPER] Beginning mapping...");
         for(ArrayList<Object> block : dataChunks) {
             Node mapperNode = new Node(true, "MapperNode" + dataChunks.indexOf(block));
+            mapperNode.setInput(block);
             mapperNode.start();
+            System.out.println("[MAPPER] Starting node: " + mapperNode.getThreadID());
             mapperNodes.add(mapperNode);
         }
+        System.out.println("[MAPPER] Total mapper nodes: " + mapperNodes.size() + "!");
         //Join all executing threads
         for(Node n : mapperNodes) {
             try {
                 n.getThread().join();
+                System.out.println("[MAPPER] Joining node: " + n.getThreadID());
             }
             catch (Exception e) {
                 System.err.println("[ERROR] Failed to join mapper thread with ID: " + n.getThreadID());
             }
         }
-
+        System.out.println("[MAPPER] Mapping completed!\n");
         /* SHUFFLE/SORT */
         shuffle();
-        ArrayList<Object> keySet = new ArrayList<>(generateKeySet());
+        ArrayList<Object> keySet = generateKeySet();
 
         /* REDUCE */
+        System.out.println("[REDUCER] Beginning reducing...");
         for(Object key : keySet) {
             Node reducerNode = new Node(false, "ReducerNode" + keySet.indexOf(key));
             reducerNode.setMapperOutput(shuffledOutput);
+            reducerNode.setKey(key);
+            System.out.println("[REDUCER] Starting node: " + reducerNode.getThreadID());
             reducerNode.start();
             reducerNodes.add(reducerNode);
         }
+        System.out.println("[REDUCER] Total reducer nodes: " + reducerNodes.size() + "!");
         //Join all executing threads
         for(Node n : reducerNodes) {
             try {
                 n.getThread().join();
+                System.out.println("[REDUCER] Joining node: " + n.getThreadID());
             }
             catch (Exception e) {
                 System.err.println("[ERROR] Failed to join reducer thread with ID: " + n.getThreadID());
@@ -228,6 +240,7 @@ public class Process {
         for(Node n : reducerNodes) {
             finalOutput.add(n.getReducerOutput());
         }
+        System.out.println("[REDUCER] Reducing complete!\n");
 
         /* OUTPUT */
         writeData(outputPath, task.format(finalOutput));

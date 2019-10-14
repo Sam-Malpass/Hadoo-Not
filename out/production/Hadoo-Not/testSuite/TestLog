@@ -1,2 +1,3 @@
 TEST NAME               RESULT              EXPECTED                PASS/FAIL
 fileReading             Success             Success                 Pass
+fileWriting             Success             Success                 Pass

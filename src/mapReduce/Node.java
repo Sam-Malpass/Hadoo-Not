@@ -161,4 +161,26 @@ public class Node implements Runnable {
     public void setMapperOutput(ArrayList<Tuple> mapperOutput) {
         this.mapperOutput = mapperOutput;
     }
+
+    /**
+     * Function setInput()
+     * <p>
+     *     Set the input to the passed argument
+     * </p>
+     * @param input is the data to process
+     */
+    public void setInput(ArrayList<Object> input) {
+        this.input = input;
+    }
+
+    /**
+     * Function setKey()
+     * <p>
+     *     Sets the key to the passed object
+     * </p>
+     * @param key is the key to reduce
+     */
+    public void setKey(Object key) {
+        this.key = key;
+    }
 }

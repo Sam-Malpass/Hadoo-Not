@@ -18,6 +18,7 @@ public class Main {
      * @param args passed arguments
      */
     public static void main(String[] args) {
-        Test.fileWriting();
+        Process p = new Process(10, "mapReduce.premadeJobs.Task1");
+        p.start("./src/AComp_Passenger_data.csv", "Output.txt");
     }
 }

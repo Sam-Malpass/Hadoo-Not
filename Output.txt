@@ -1,0 +1,69 @@
+Airport: AMS
+Total Flights: 13
+
+Airport: ATL
+Total Flights: 34
+
+Airport: BKK
+Total Flights: 15
+
+Airport: CAN
+Total Flights: 35
+
+Airport: CDG
+Total Flights: 20
+
+Airport: CGK
+Total Flights: 26
+
+Airport: CLT
+Total Flights: 20
+
+Airport: DEN
+Total Flights: 43
+
+Airport: DFW
+Total Flights: 10
+
+Airport: FCO
+Total Flights: 14
+
+Airport: HND
+Total Flights: 13
+
+Airport: IAH
+Total Flights: 36
+
+Airport: JFK
+Total Flights: 24
+
+Airport: KUL
+Total Flights: 31
+
+Airport: LAS
+Total Flights: 15
+
+Airport: LHR
+Total Flights: 24
+
+Airport: MAD
+Total Flights: 12
+
+Airport: MIA
+Total Flights: 11
+
+Airport: MUC
+Total Flights: 13
+
+Airport: ORD
+Total Flights: 32
+
+Airport: PEK
+Total Flights: 10
+
+Airport: PVG
+Total Flights: 20
+
+Airport: UGK
+Total Flights: 1
+
