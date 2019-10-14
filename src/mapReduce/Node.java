@@ -34,9 +34,21 @@ public class Node implements Runnable {
      */
     private static Job task;
 
+    /**
+     * Constructor with arguments
+     * <p>
+     *     Takes the mode and the ID and prepares the Node for execution of a Job part
+     * </p>
+     * @param mode gives the type of node
+     * @param id is the ID for the node
+     */
     public Node(boolean mode, String id) {
-
+        this.threadID = id;
+        this.mode = mode;
     }
+
+
+    
     @Override
     public void run() {
 
