@@ -140,8 +140,23 @@ public class Process {
         ArrayList<Object> data = task.preprocess(input);
 
         /* SPLIT */
+        ArrayList<ArrayList<Object>> dataChunks = split(data);
 
         /* MAP */
+        for(ArrayList<Object> block : dataChunks) {
+            Node mapperNode = new Node(true, "MapperNode" + dataChunks.indexOf(block));
+            mapperNode.start();
+            mapperNodes.add(mapperNode);
+        }
+        //Join all executing threads
+        for(Node n : mapperNodes) {
+            try {
+                n.thread.join();
+            }
+            catch (Exception e) {
+                System.err.println("[ERROR] Failed to join mapper thread with ID: " + n.getThreadID());
+            }
+        }
 
         /* SHUFFLE/SORT */
 

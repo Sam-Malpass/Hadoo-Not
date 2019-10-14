@@ -128,4 +128,15 @@ public class Node implements Runnable {
     public Tuple getReducerOutput() {
         return this.reducerOutput;
     }
+
+    /**
+     * Function getThreadID()
+     * <p>
+     *     Return the threadID
+     * </p>
+     * @return threadID
+     */
+    public String getThreadID() {
+        return threadID;
+    }
 }
