@@ -194,6 +194,7 @@ public class Process {
         /* REDUCE */
         for(Object key : keySet) {
             Node reducerNode = new Node(false, "ReducerNode" + keySet.indexOf(key));
+            reducerNode.setMapperOutput(shuffledOutput);
             reducerNode.start();
             reducerNodes.add(reducerNode);
         }
@@ -212,6 +213,7 @@ public class Process {
         }
 
         /* OUTPUT */
+        writeData(outputPath, task.format(finalOutput));
     }
 }
 
