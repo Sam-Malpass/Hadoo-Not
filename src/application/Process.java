@@ -106,6 +106,23 @@ public class Process {
     }
 
     /**
+     * Function generateKeySet()
+     * <p>
+     *     Compiles a list of all the unique keys in the shuffledOutput
+     * </p>
+     * @return the set of unique keys
+     */
+    private ArrayList<Object> generateKeySet() {
+        ArrayList<Object> keySet = new ArrayList<>();
+        for(Tuple t : shuffledOutput) {
+            if(!keySet.contains(t.getKey())) {
+                keySet.add(t.getKey());
+            }
+        }
+        return keySet;
+    }
+
+    /**
      * Function readData()
      * <p>
      *     Returns the result of the fileHandler when asked to read a given file
@@ -151,7 +168,7 @@ public class Process {
         //Join all executing threads
         for(Node n : mapperNodes) {
             try {
-                n.thread.join();
+                n.getThread().join();
             }
             catch (Exception e) {
                 System.err.println("[ERROR] Failed to join mapper thread with ID: " + n.getThreadID());
@@ -159,6 +176,8 @@ public class Process {
         }
 
         /* SHUFFLE/SORT */
+        shuffle();
+        ArrayList<Object> keySet = new ArrayList<>(generateKeySet());
 
         /* REDUCE */
 
