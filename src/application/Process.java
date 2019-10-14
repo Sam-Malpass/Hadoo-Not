@@ -134,6 +134,18 @@ public class Process {
         return fileHandler.read(filePath);
     }
 
+    /**
+     * Function writeData()
+     * <p>
+     *     Writes an output string to a given file
+     * </p>
+     * @param filePath is the file to output to
+     * @param output is the data to be written
+     */
+    private void writeData(String filePath, String output) {
+        fileHandler.write(filePath, output);
+    }
+
     public void start(String inputPath, String outputPath) {
         /* SETUP JOB */
         try {
@@ -180,6 +192,22 @@ public class Process {
         ArrayList<Object> keySet = new ArrayList<>(generateKeySet());
 
         /* REDUCE */
+        for(Object key : keySet) {
+            Node reducerNode = new Node(false, "ReducerNode" + keySet.indexOf(key));
+            reducerNode.start();
+            reducerNodes.add(reducerNode);
+        }
+        //Join all executing threads
+        for(Node n : reducerNodes) {
+            try {
+                n.getThread().join();
+            }
+            catch (Exception e) {
+                System.err.println("[ERROR] Failed to join reducer thread with ID: " + n.getThreadID());
+            }
+        }
+        //Get all results
+        
 
         /* OUTPUT */
     }
