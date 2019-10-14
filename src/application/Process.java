@@ -207,7 +207,9 @@ public class Process {
             }
         }
         //Get all results
-        
+        for(Node n : reducerNodes) {
+            finalOutput.add(n.getReducerOutput());
+        }
 
         /* OUTPUT */
     }

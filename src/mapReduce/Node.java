@@ -150,4 +150,15 @@ public class Node implements Runnable {
     public Thread getThread() {
         return this.thread;
     }
+
+    /**
+     * Function setMapperOutput()
+     * <p>
+     *     Sets the mapper output for the node
+     * </p>
+     * @param mapperOutput is the data to use
+     */
+    public void setMapperOutput(ArrayList<Tuple> mapperOutput) {
+        this.mapperOutput = mapperOutput;
+    }
 }
