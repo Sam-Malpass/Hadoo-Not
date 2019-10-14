@@ -67,8 +67,12 @@ public class Node implements Runnable {
         this.mode = mode;
     }
 
-
-
+    /**
+     * Function run()
+     * <p>
+     *     Executes the map or reduce task based on the mode the Node is in
+     * </p>
+     */
     @Override
     public void run() {
         if(this.mode) {
