@@ -39,4 +39,48 @@ public class Tuple {
         this.key = k;
         this.value = v;
     }
+
+    /**
+     * Function getKey()
+     * <p>
+     *     Returns the key
+     * </p>
+     * @return the key
+     */
+    public Object getKey() {
+        return this.key;
+    }
+
+    /**
+     * Function getValue()
+     * <p>
+     *     Returns the value
+     * </p>
+     * @return the value
+     */
+    public Object getValue() {
+        return this.value;
+    }
+
+    /**
+     * Function setKey()
+     * <p>
+     *     Sets the key to the passed argument
+     * </p>
+     * @param newKey is the new key to use
+     */
+    public void setKey(Object newKey) {
+        this.key = newKey;
+    }
+
+    /**
+     * Function setValue()
+     * <p>
+     *     Sets the value to the passed argument
+     * </p>
+     * @param newVal is the new value to be used
+     */
+    public void setValue(Object newVal) {
+        this.value = newVal;
+    }
 }
