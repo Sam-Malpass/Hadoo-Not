@@ -146,6 +146,21 @@ public class Process {
         fileHandler.write(filePath, output);
     }
 
+    /**
+     * Function start()
+     * <p>
+     *     Runs the all the stages of the job
+     *     1. Sets up the Job object
+     *     2. Reads in the data
+     *     3. Runs the Preprocessor
+     *     4. Runs the map stage on a set number of nodes
+     *     5. Shuffle/Sort the results from the mapper nodes
+     *     6. Run the reduce stage on a number of nodes
+     *     7. Output the results to a file
+     * </p>
+     * @param inputPath is the file to read from
+     * @param outputPath is the file to output to
+     */
     public void start(String inputPath, String outputPath) {
         /* SETUP JOB */
         try {
