@@ -18,6 +18,6 @@ public class Main {
      * @param args passed arguments
      */
     public static void main(String[] args) {
-        Test.fileReading();
+        Test.fileWriting();
     }
 }

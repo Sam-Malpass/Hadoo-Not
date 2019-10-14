@@ -38,7 +38,7 @@ public class Test {
         ArrayList<String> list = testHandler.read("./src/AComp_Passenger_data.csv");
         String builder = "";
         for(String s : list) {
-            builder += builder + s + "\n";
+            builder = builder + s + "\n";
         }
         System.out.println("##### TESTING FILE WRITING #####");
         testHandler.write("testOutput.txt", builder);
