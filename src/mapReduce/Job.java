@@ -36,4 +36,15 @@ public abstract class Job {
      * @return a list of Tuples
      */
     public abstract ArrayList<Tuple> map(ArrayList<Object> input);
+
+    /**
+     * Function reduce()
+     * <p>
+     *     User can define how to perform reduce task for given output from mapper threads to return a singular Tuple
+     * </p>
+     * @param key is the key to reduce by
+     * @param input is the sorted output from the mappers
+     * @return the reduced Tuple
+     */
+    public abstract Tuple reduce(Object key, ArrayList<Tuple> input);
 }
