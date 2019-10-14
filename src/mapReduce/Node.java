@@ -139,4 +139,15 @@ public class Node implements Runnable {
     public String getThreadID() {
         return threadID;
     }
+
+    /**
+     * Function getThread()
+     * <p>
+     *     Return the thread
+     * </p>
+     * @return the thread
+     */
+    public Thread getThread() {
+        return this.thread;
+    }
 }
