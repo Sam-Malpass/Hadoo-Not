@@ -47,4 +47,15 @@ public abstract class Job {
      * @return the reduced Tuple
      */
     public abstract Tuple reduce(Object key, ArrayList<Tuple> input);
+
+    /**
+     * Function format()
+     * <p>
+     *     User can define how to format the results from the reducer into a singular String which will be written to
+     *     a file.
+     * </p>
+     * @param input are the Tuples from the reducer
+     * @return the formatted String for file output
+     */
+    public abstract String format(ArrayList<Tuple> input);
 }
