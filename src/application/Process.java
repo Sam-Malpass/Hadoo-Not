@@ -41,4 +41,17 @@ public class Process {
      * finalOutput holds the results from the reduce Nodes
      */
     private ArrayList<Tuple> finalOutput = new ArrayList<>();
+
+    /**
+     * Constructor with arguments
+     * <p>
+     *     Sets up the object using the passed arguments
+     * </p>
+     * @param size is the number to use for blockSize
+     * @param jobName is the name of the class file to load
+     */
+    public Process(int size, String jobName) {
+        this.blockSize = size;
+        this.jobName = jobName;
+    }
 }
