@@ -6,6 +6,8 @@
  */
 package application;
 
+import testSuite.Test;
+
 public class Main {
 
     /**
@@ -15,5 +17,7 @@ public class Main {
      * </p>
      * @param args passed arguments
      */
-    public static void main(String[] args) {}
+    public static void main(String[] args) {
+        Test.fileReading();
+    }
 }
