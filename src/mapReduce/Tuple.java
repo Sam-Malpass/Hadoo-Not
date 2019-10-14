@@ -1,7 +1,7 @@
 /**
  * Tuple
  * @author Sam Malpass
- * @version 0.0.0
+ * @version 0.0.1
  * @since 0.0.0
  */
 package mapReduce;
