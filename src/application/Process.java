@@ -54,4 +54,21 @@ public class Process {
         this.blockSize = size;
         this.jobName = jobName;
     }
+
+    /**
+     * Function split()
+     * <p>
+     *     Splits the list of input data entries into chunks of blockSize
+     * </p>
+     * @param input is the data to be split
+     * @return the chunks
+     */
+    private ArrayList<ArrayList<Object>> split(ArrayList<Object> input) {
+        ArrayList<ArrayList<Object>> chunks = new ArrayList<>();
+        for(int i = 0; i < input.size(); i += blockSize) {
+            ArrayList<Object> chunk = new ArrayList<>(input.subList(i, Math.min(input.size(), i + blockSize)));
+            chunks.add(chunk);
+        }
+        return chunks;
+    }
 }
