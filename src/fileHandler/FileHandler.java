@@ -42,4 +42,16 @@ public class FileHandler {
     public ArrayList<String> read(String fileName) {
         return this.input.readFile(fileName);
     }
+
+    /**
+     * Function write()
+     * <p>
+     *     Writes a String to a given file
+     * </p>
+     * @param fileName is the name of the file to write too
+     * @param output is the String to be written to the file
+     */
+    public void write(String fileName, String output) {
+        this.output.writeOutput(fileName, output);
+    }
 }
