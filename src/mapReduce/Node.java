@@ -21,10 +21,22 @@ public class Node implements Runnable {
     private String threadID;
 
     /**
+     * mode holds the Job part to execute
+     * <p>
+     *     false is for reduce part
+     *     true is for map part
+     * </p>
+     */
+    private boolean mode;
+
+    /**
      * task holds the Job to be run
      */
-    private Job task;
-    
+    private static Job task;
+
+    public Node(boolean mode, String id) {
+
+    }
     @Override
     public void run() {
 
