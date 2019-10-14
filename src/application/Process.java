@@ -64,6 +64,7 @@ public class Process {
     public Process(int size, String jobName) {
         this.blockSize = size;
         this.jobName = jobName;
+        this.fileHandler = new FileHandler();
     }
 
     /**
@@ -102,8 +103,16 @@ public class Process {
         });
     }
 
+    /**
+     * Function readData()
+     * <p>
+     *     Returns the result of the fileHandler when asked to read a given file
+     * </p>
+     * @param filePath is the file to read
+     * @return the lines of the file as an ArrayList
+     */
     private ArrayList<String> readData(String filePath) {
-
+        return fileHandler.read(filePath);
     }
 
     public void start(String inputPath, String outputPath) {
