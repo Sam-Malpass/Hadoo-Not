@@ -6,5 +6,8 @@
  */
 package testSuite;
 
-public class Tester {
+public class Test {
+    public static void fileReading() {
+
+    }
 }
