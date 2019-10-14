@@ -83,4 +83,15 @@ public class Tuple {
     public void setValue(Object newVal) {
         this.value = newVal;
     }
+
+    /**
+     * Function toString()
+     * <p>
+     *     Returns a formatted string of the Tuple's data
+     * </p>
+     * @return a formatted string
+     */
+    public String toString() {
+        return "<" + key.toString() + "," + value.toString() + ">";
+    }
 }
