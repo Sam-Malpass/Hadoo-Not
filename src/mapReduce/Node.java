@@ -95,4 +95,26 @@ public class Node implements Runnable {
             reducerOutput = task.reduce(key, mapperOutput);
         }
     }
+
+    /**
+     * Function getMapperOutput()
+     * <p>
+     *     Returns the mapper output from the node
+     * </p>
+     * @return the mapperOutput
+     */
+    public ArrayList<Tuple> getMapperOutput() {
+        return this.mapperOutput;
+    }
+
+    /**
+     * Function getReducerOutput()
+     * <p>
+     *     Return the reducerOutput for this Node
+     * </p>
+     * @return the reducerOutput
+     */
+    public Tuple getReducerOutput() {
+        return this.reducerOutput;
+    }
 }
