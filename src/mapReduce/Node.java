@@ -68,6 +68,17 @@ public class Node implements Runnable {
     }
 
     /**
+     * Function setup()
+     * <p>
+     *     Sets the task to passed Job object, which should be user defined
+     * </p>
+     * @param job is the task to be run
+     */
+    public static void setup(Job job) {
+        task = job;
+    }
+
+    /**
      * Function start()
      * <p>
      *     Starts the thread
