@@ -8,5 +8,13 @@ package fileHandler;
 
 public class FileOutput {
 
-    
+    /**
+     * Constructor with no arguments
+     * <p>
+     *     Sets up the object
+     * </p>
+     */
+    public FileOutput() {}
+
+
 }
