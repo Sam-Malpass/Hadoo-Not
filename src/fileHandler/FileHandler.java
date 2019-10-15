@@ -34,6 +34,7 @@ public class FileHandler {
     public FileHandler() {
         this.input = new FileInput();
         this.output = new FileOutput();
+        this.jarLoader = new JarLoader();
     }
 
     /**
@@ -58,5 +59,18 @@ public class FileHandler {
      */
     public void write(String fileName, String output) {
         this.output.writeOutput(fileName, output);
+    }
+
+    /**
+     * Function loadJob()
+     * <p>
+     *     Gets the job to be run
+     * </p>
+     * @param jarPath is the JAR to load from
+     * @param className is the job within the JAR
+     * @return the created object
+     */
+    public Object loadJob(String jarPath, String className) {
+        return jarLoader.createObject(jarPath, className);
     }
 }

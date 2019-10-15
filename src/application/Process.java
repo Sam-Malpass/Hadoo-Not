@@ -11,7 +11,6 @@ import fileHandler.JarLoader;
 import mapReduce.Job;
 import mapReduce.Node;
 import mapReduce.Tuple;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,6 +26,11 @@ public class Process {
      * jobName is the name of the class file to use as the Job
      */
     private String jobName;
+
+    /**
+     * jarName is the name of the JAR file to load from
+     */
+    private String jarName;
 
     /**
      * mapperNodes holds a list of all the Nodes that map
@@ -64,11 +68,13 @@ public class Process {
      *     Sets up the object using the passed arguments
      * </p>
      * @param size is the number to use for blockSize
+     * @param jarName is the location of the JAR file
      * @param jobName is the name of the class file to load
      */
-    public Process(int size, String jobName) {
+    public Process(int size, String jarName, String jobName) {
         this.blockSize = size;
         this.jobName = jobName;
+        this.jarName = jarName;
         this.fileHandler = new FileHandler();
     }
 
@@ -166,24 +172,9 @@ public class Process {
      */
     public void start(String inputPath, String outputPath) {
         /* SETUP JOB */
-        /*
-        try {
-            Class cls = Class.forName(jobName);
-            ClassLoader cLoader = cls.getClassLoader();
-            Class cls2 = Class.forName(jobName, true, cLoader);
-            Constructor<Job> constructor = cls2.getConstructor();
-            Job tmp = constructor.newInstance();
-            task = tmp;
-            Node.setup(task);
-        }
-        catch (Exception e) {
-            System.err.println("[ERROR] Could not instantiate object for: " + jobName);
-            return;
-        }
-        */
         try {
             JarLoader jarLoader = new JarLoader();
-            task = (Job) jarLoader.createObject("C://Users/sam/IdeaProjects/Task1/out/artifacts/Task1_jar/Task1.jar", "Task1Job");
+            task = (Job) jarLoader.createObject(jarName, jobName);
             Node.setup(task);
         }
         catch(Exception e) {

@@ -22,7 +22,7 @@ public class Main {
     public static void main(String[] args) {
         FileHandler fh = new FileHandler();
         JarLoader jl = new JarLoader();
-        Process p = new Process(10, "mapReduce.premadeJobs.Task1");
+        Process p = new Process(10, "C://Users/sam/IdeaProjects/Task1/out/artifacts/Task1_jar/Task1.jar", "Task1Job");
         p.start("./src/AComp_Passenger_data.csv", "Output.txt");
     }
 }
