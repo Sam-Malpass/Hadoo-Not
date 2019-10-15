@@ -21,6 +21,11 @@ public class FileHandler {
     private FileOutput output;
 
     /**
+     * jarLoader holds the JarLoader object
+     */
+    private JarLoader jarLoader;
+
+    /**
      * Constructor with no arguments
      * <p>
      *     Sets up the object

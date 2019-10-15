@@ -7,6 +7,9 @@
 package application;
 
 
+import fileHandler.FileHandler;
+import fileHandler.JarLoader;
+
 public class Main {
 
     /**
@@ -17,6 +20,8 @@ public class Main {
      * @param args passed arguments
      */
     public static void main(String[] args) {
+        FileHandler fh = new FileHandler();
+        JarLoader jl = new JarLoader();
         Process p = new Process(10, "mapReduce.premadeJobs.Task1");
         p.start("./src/AComp_Passenger_data.csv", "Output.txt");
     }

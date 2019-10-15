@@ -7,6 +7,7 @@
 package application;
 
 import fileHandler.FileHandler;
+import fileHandler.JarLoader;
 import mapReduce.Job;
 import mapReduce.Node;
 import mapReduce.Tuple;
@@ -165,6 +166,7 @@ public class Process {
      */
     public void start(String inputPath, String outputPath) {
         /* SETUP JOB */
+        /*
         try {
             Class cls = Class.forName(jobName);
             ClassLoader cLoader = cls.getClassLoader();
@@ -177,6 +179,15 @@ public class Process {
         catch (Exception e) {
             System.err.println("[ERROR] Could not instantiate object for: " + jobName);
             return;
+        }
+        */
+        try {
+            JarLoader jarLoader = new JarLoader();
+            task = (Job) jarLoader.createObject("C://Users/sam/IdeaProjects/Task1/out/artifacts/Task1_jar/Task1.jar", "Task1Job");
+            Node.setup(task);
+        }
+        catch(Exception e) {
+            System.err.println("[ERROR] you done gone fucked it");
         }
 
         /* READ IN */
