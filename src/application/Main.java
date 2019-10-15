@@ -6,7 +6,6 @@
  */
 package application;
 
-import testSuite.Test;
 
 public class Main {
 
