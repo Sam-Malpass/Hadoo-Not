@@ -6,12 +6,13 @@
  */
 package graphicalUserInterface;
 
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class GUI  {
+public class GUI extends Application {
 
     /**
      * windowHeight holds the height of the window
@@ -34,22 +35,13 @@ public class GUI  {
     private Scene mainScene;
 
     /**
-     * Constructor with arguments
+     * Constructor with no arguments
      * <p>
      *     Sets ip the object
      * </p>
-     * @param stage is the Stage to use
      */
-    public GUI(Stage stage) {
-        this.mainStage = stage;
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXML/MainScreen.fxml"));
-            mainScene = new Scene(root, windowWidth, windowHeight);
-        }
-        catch (Exception e) {
-            System.out.println("[ERROR] Could not access MainScreen.fxml");
-        }
-        setup();
+    public GUI() {
+
     }
 
     /**
@@ -61,5 +53,20 @@ public class GUI  {
     private void setup() {
         this.mainStage.setTitle("Hadoo-Not");
         this.mainStage.setScene(this.mainScene);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        this.mainStage = stage;
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/MainScreen.fxml"));
+            mainScene = new Scene(root, windowWidth, windowHeight);
+        }
+        catch (Exception e) {
+            System.out.println("[ERROR] Could not access MainScreen.fxml");
+        }
+        setup();
+        this.mainStage.setResizable(false);
+        this.mainStage.show();
     }
 }

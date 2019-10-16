@@ -9,10 +9,11 @@ package application;
 
 import fileHandler.FileHandler;
 import fileHandler.JarLoader;
+import graphicalUserInterface.GUI;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class Main {
 
     /**
      * Function main()
@@ -28,8 +29,4 @@ public class Main extends Application {
         //p.start("./src/AComp_Passenger_data.csv", "Output.txt");
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-
-    }
 }
