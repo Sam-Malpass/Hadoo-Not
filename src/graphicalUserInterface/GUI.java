@@ -6,6 +6,8 @@
  */
 package graphicalUserInterface;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -30,4 +32,23 @@ public class GUI  {
      * mainScene holds the Scene for the application
      */
     private Scene mainScene;
+
+    /**
+     * Constructor with arguments
+     * <p>
+     *     Sets ip the object
+     * </p>
+     * @param stage is the Stage to use
+     */
+    public GUI(Stage stage) {
+        this.mainStage = stage;
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/GUI.fxml"));
+            mainScene = new Scene(root, windowWidth, windowHeight);
+        }
+        catch (Exception e) {
+            System.out.println("[ERROR] Could not access GUI.fxml");
+        }
+        setup();
+    }
 }
