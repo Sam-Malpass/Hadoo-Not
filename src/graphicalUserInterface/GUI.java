@@ -51,4 +51,15 @@ public class GUI  {
         }
         setup();
     }
+
+    /**
+     * Function setup()
+     * <p>
+     *     Sets up the actual window
+     * </p>
+     */
+    private void setup() {
+        this.mainStage.setTitle("Hadoo-Not");
+        this.mainStage.setScene(this.mainScene);
+    }
 }
