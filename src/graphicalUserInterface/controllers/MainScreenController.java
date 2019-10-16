@@ -17,6 +17,8 @@ public class MainScreenController implements Initializable {
     @FXML
     private TextArea console;
 
+    private boolean setup = false;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         console.setEditable(false);
@@ -24,7 +26,7 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void setupJob() {
-
+        setup = true;
     }
 
     @FXML
@@ -58,4 +60,5 @@ public class MainScreenController implements Initializable {
     public void clearConsole() {
         console.clear();
     }
+
 }

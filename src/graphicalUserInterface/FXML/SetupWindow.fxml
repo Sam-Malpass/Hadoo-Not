@@ -43,7 +43,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ComboBox prefWidth="400.0" promptText="Select Class..." />
+                  <ComboBox fx:id="comboClass" prefWidth="400.0" promptText="Select Class..." />
                </children>
                <VBox.margin>
                   <Insets />
