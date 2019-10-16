@@ -43,11 +43,11 @@ public class GUI  {
     public GUI(Stage stage) {
         this.mainStage = stage;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXML/GUI.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/MainScreen.fxml"));
             mainScene = new Scene(root, windowWidth, windowHeight);
         }
         catch (Exception e) {
-            System.out.println("[ERROR] Could not access GUI.fxml");
+            System.out.println("[ERROR] Could not access MainScreen.fxml");
         }
         setup();
     }
