@@ -6,27 +6,58 @@
  */
 package application;
 
-
-import fileHandler.FileHandler;
-import fileHandler.JarLoader;
-import graphicalUserInterface.GUI;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main {
+public class Main extends Application{
 
     /**
-     * Function main()
-     * <p>
-     *     Entry point for application
-     * </p>
-     * @param args passed arguments
+     * windowHeight holds the height of the window
      */
-    public static void main(String[] args) {
-        //FileHandler fh = new FileHandler();
-        //JarLoader jl = new JarLoader();
-        //Process p = new Process(10, "C://Users/sam/IdeaProjects/Task1/out/artifacts/Task1_jar/Task1.jar", "Task1Job");
-        //p.start("./src/AComp_Passenger_data.csv", "Output.txt");
+    private double windowHeight = 720;
+
+    /**
+     * windowWidth holds the width of the window
+     */
+    private double windowWidth = 1280;
+
+    /**
+     * mainStage holds the Stage for the application
+     */
+    private Stage mainStage;
+
+    /**
+     * mainScene holds the Scene for the application
+     */
+    private Scene mainScene;
+
+    /**
+     * Function setup()
+     * <p>
+     *     Sets up the actual window
+     * </p>
+     */
+    private void setup() {
+        this.mainStage.setTitle("Hadoo-Not");
+        this.mainStage.setScene(this.mainScene);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        this.mainStage = stage;
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("../graphicalUserInterface/FXML/MainScreen.fxml"));
+            mainScene = new Scene(root, windowWidth, windowHeight);
+        }
+        catch (Exception e) {
+            System.out.println("[ERROR] Could not access MainScreen.fxml");
+        }
+        setup();
+        this.mainStage.setResizable(false);
+        this.mainStage.show();
     }
 
 }

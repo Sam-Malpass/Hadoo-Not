@@ -30,7 +30,7 @@ public class FileOutput {
     public void writeOutput(String fileName, String output) {
         BufferedWriter writer;
         try {
-            writer = new BufferedWriter(new FileWriter(fileName));
+            writer = new BufferedWriter(new FileWriter("Output/" + fileName));
             writer.append(output);
             writer.flush();
             writer.close();

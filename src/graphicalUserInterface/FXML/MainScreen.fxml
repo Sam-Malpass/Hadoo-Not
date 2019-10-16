@@ -39,22 +39,22 @@
                                  <children>
                                     <HBox layoutX="80.0" layoutY="-24.0" prefHeight="51.0" prefWidth="1274.0" spacing="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Button fx:id="run" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="Run">
+                                          <Button fx:id="run" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="Run" onAction="#run">
                                              <HBox.margin>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Button fx:id="about" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="About">
+                                          <Button fx:id="about" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="About" onAction="#about">
                                              <HBox.margin>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Button fx:id="help" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="Help">
+                                          <Button fx:id="help" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="Help" onAction="#help">
                                              <HBox.margin>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Button fx:id="openOutput" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="Open Output...">
+                                          <Button fx:id="openOutput" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="Open Output..." onAction="#openOutput">
                                              <HBox.margin>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                              </HBox.margin>
