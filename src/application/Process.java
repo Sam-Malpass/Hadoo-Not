@@ -1,15 +1,18 @@
 /**
  * Process
  * @author Sam Malpass
- * @version 0.0.3
+ * @version 0.0.4
  * @since 0.0.1
  */
 package application;
 
+import application.nodes.MapNode;
+import application.nodes.ReduceNode;
+import application.nodes.Node;
 import fileHandler.FileHandler;
 import fileHandler.JarLoader;
 import mapReduce.Job;
-import mapReduce.Node;
+//import mapReduce.Node;
 import mapReduce.Tuple;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,12 +38,12 @@ public class Process {
     /**
      * mapperNodes holds a list of all the Nodes that map
      */
-    private ArrayList<Node> mapperNodes = new ArrayList<>();
+    private ArrayList<MapNode> mapperNodes = new ArrayList<>();
 
     /**
      * reducerNodes holds a list of all the Nodes that reduce
      */
-    private ArrayList<Node> reducerNodes = new ArrayList<>();
+    private ArrayList<ReduceNode> reducerNodes = new ArrayList<>();
 
     /**
      * shuffledOutput holds a sorted list of all map Node outputs
@@ -103,7 +106,7 @@ public class Process {
      */
     private void shuffle() {
         for(Node n : mapperNodes) {
-            ArrayList<Tuple> mapperOutput = n.getMapperOutput();
+             ArrayList<Tuple> mapperOutput = (ArrayList<Tuple>) n.getOutput();
             shuffledOutput.addAll(mapperOutput);
         }
         Collections.sort(shuffledOutput, new Comparator<Tuple>() {
@@ -178,7 +181,7 @@ public class Process {
             Node.setup(task);
         }
         catch(Exception e) {
-            System.err.println("[ERROR] you done gone fucked it");
+            System.err.println("[ERROR] Failed to load job");
         }
 
         /* READ IN */
@@ -195,7 +198,7 @@ public class Process {
         /* MAP */
         System.out.println("[MAPPER] Beginning mapping...");
         for(ArrayList<Object> block : dataChunks) {
-            Node mapperNode = new Node(true, "MapperNode" + dataChunks.indexOf(block));
+            MapNode mapperNode = new MapNode( "MapperNode" + dataChunks.indexOf(block));
             mapperNode.setInput(block);
             mapperNode.start();
             System.out.println("[MAPPER] Starting node: " + mapperNode.getThreadID());
@@ -220,11 +223,10 @@ public class Process {
         /* REDUCE */
         System.out.println("[REDUCER] Beginning reducing...");
         for(Object key : keySet) {
-            Node reducerNode = new Node(false, "ReducerNode" + keySet.indexOf(key));
-            reducerNode.setMapperOutput(shuffledOutput);
-            reducerNode.setKey(key);
+            ReduceNode reducerNode = new ReduceNode( "ReducerNode" + keySet.indexOf(key));
+            //reducerNode.setInput(shuffledOutput);
             System.out.println("[REDUCER] Starting node: " + reducerNode.getThreadID());
-            reducerNode.start();
+            reducerNode.start(key, shuffledOutput);
             reducerNodes.add(reducerNode);
         }
         System.out.println("[REDUCER] Total reducer nodes: " + reducerNodes.size() + "!");
@@ -240,7 +242,8 @@ public class Process {
         }
         //Get all results
         for(Node n : reducerNodes) {
-            finalOutput.add(n.getReducerOutput());
+            Tuple tmp = (Tuple) n.getOutput();
+            finalOutput.add(tmp);
         }
         System.out.println("[REDUCER] Reducing complete!\n");
 

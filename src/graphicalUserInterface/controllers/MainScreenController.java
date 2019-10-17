@@ -1,7 +1,7 @@
 /**
  * MainScreenController
  * @author Sam Malpass
- * @version 0.0.3
+ * @version 0.0.4
  * @since 0.0.3
  */
 package graphicalUserInterface.controllers;
@@ -128,7 +128,7 @@ public class MainScreenController implements Initializable {
     private void about() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("Hadoo-Not");
-        alert.setContentText("Version 0.0.3 by Sam Malpass");
+        alert.setContentText("Version 0.0.4 by Sam Malpass");
         alert.setTitle("About");
         alert.showAndWait();
     }
