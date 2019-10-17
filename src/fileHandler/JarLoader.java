@@ -43,7 +43,9 @@ public class JarLoader {
                     break;
                 }
                 if(jarEntry.getName().endsWith(".class")) {
-                    classes.add(jarEntry.getName().replaceAll("/", "\\."));
+                    if(!jarEntry.getName().contains("fileHandler/") && !jarEntry.getName().contains("mapReduce")) {
+                        classes.add(jarEntry.getName().replaceAll("/", "\\."));
+                    }
                 }
             }
         }

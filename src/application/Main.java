@@ -6,10 +6,13 @@
  */
 package application;
 
+import graphicalUserInterface.controllers.MainScreenController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class Main extends Application{
@@ -49,7 +52,8 @@ public class Main extends Application{
     public void start(Stage stage) throws Exception {
         this.mainStage = stage;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("../graphicalUserInterface/FXML/MainScreen.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("../graphicalUserInterface/FXML/MainScreen.fxml"));
             mainScene = new Scene(root, windowWidth, windowHeight);
         }
         catch (Exception e) {

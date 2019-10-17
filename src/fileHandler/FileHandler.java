@@ -73,4 +73,8 @@ public class FileHandler {
     public Object loadJob(String jarPath, String className) {
         return jarLoader.createObject(jarPath, className);
     }
+
+    public ArrayList<String> listClasses(String jarName) {
+        return this.jarLoader.getClassNames(jarName);
+    }
 }
