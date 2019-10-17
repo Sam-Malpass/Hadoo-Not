@@ -55,7 +55,7 @@ public abstract class Node implements Runnable {
      * </p>
      * @param passedTask is the task to be run
      */
-    public void setup(Job passedTask) {
+    public static void setup(Job passedTask) {
         task = passedTask;
     }
 
@@ -145,5 +145,16 @@ public abstract class Node implements Runnable {
      */
     public void setInput(Object input) {
         this.input = input;
+    }
+
+    /**
+     * Function setOutput()
+     * <p>
+     *     Sets the output to the passed object
+     * </p>
+     * @param output is the new output value
+     */
+    public void setOutput(Object output) {
+        this.output = output;
     }
 }

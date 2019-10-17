@@ -18,11 +18,6 @@ public class ReduceNode extends Node {
     private Object key;
 
     /**
-     * output holds the output
-     */
-    private Tuple output;
-
-    /**
      * Constructor with arguments
      * <p>
      * Takes the mode and the ID and prepares the Node for execution of a Job part
@@ -35,17 +30,17 @@ public class ReduceNode extends Node {
     }
 
     /**
-     * Function run()
+     * Function start()
      * <p>
      *     Sets the input to the passed data and runs the operation
      * </p>
      * @param key is the key to reduce by
      * @param input is the data to work on
      */
-    public void run(Object key, ArrayList<Tuple> input) {
+    public void start(Object key, ArrayList<Tuple> input) {
         setInput(input);
         this.key = key;
-        run();
+        super.start();
     }
 
     /**
@@ -57,6 +52,6 @@ public class ReduceNode extends Node {
     @Override
     public void run() {
         ArrayList<Tuple> input = (ArrayList<Tuple>) getInput();
-        output = getTask().reduce(key, input);
+        setOutput(getTask().reduce(key, input));
     }
 }

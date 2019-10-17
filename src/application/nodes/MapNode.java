@@ -22,15 +22,15 @@ public class MapNode extends Node {
     }
 
     /**
-     * Function run()
+     * Function start()
      * <p>
      *     Sets the input and runs the thread
      * </p>
      * @param input is the input to operate on
      */
-    public void run(ArrayList<Object> input) {
+    public void start(ArrayList<Object> input) {
         this.setInput(input);
-        run();
+        super.start();
     }
 
     /**
@@ -42,6 +42,6 @@ public class MapNode extends Node {
     @Override
     public void run() {
         ArrayList<Object> input = (ArrayList<Object>) getInput();
-        getTask().map(input);
+        setOutput(getTask().map(input));
     }
 }
