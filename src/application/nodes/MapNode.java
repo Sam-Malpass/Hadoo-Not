@@ -6,8 +6,9 @@
  */
 package application.nodes;
 
-public class MapNode extends Node {
+import java.util.ArrayList;
 
+public class MapNode extends Node {
 
     /**
      * Constructor with arguments
@@ -20,8 +21,26 @@ public class MapNode extends Node {
         super(id);
     }
 
+    /**
+     * Function run()
+     * <p>
+     *     Sets the input and runs the thread
+     * </p>
+     * @param input is the input to operate on
+     */
+    public void run(ArrayList<Object> input) {
+        this.setInput(input);
+        run();
+    }
+
+    /**
+     * Function run()
+     * <p>
+     *     Runs the thread
+     * </p>
+     */
     @Override
     public void run() {
-
+        getTask().map(getInput());
     }
 }

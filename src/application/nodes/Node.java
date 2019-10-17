@@ -104,6 +104,17 @@ public abstract class Node implements Runnable {
     }
 
     /**
+     * Function getTask()
+     * <p>
+     *     Returns the task
+     * </p>
+     * @return the task
+     */
+    public Job getTask(){
+        return task;
+    }
+
+    /**
      * Function getThread()
      * <p>
      *     Return the thread
