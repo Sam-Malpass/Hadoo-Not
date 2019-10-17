@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -76,7 +77,11 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void about() {
-
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Hadoo-Not");
+        alert.setContentText("Version 0.0.3 by Sam Malpass");
+        alert.setTitle("About");
+        alert.showAndWait();
     }
 
     @FXML
