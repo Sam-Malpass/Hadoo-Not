@@ -6,5 +6,57 @@
  */
 package application.nodes;
 
-public class ReduceNode {
+import mapReduce.Tuple;
+
+import java.util.ArrayList;
+
+public class ReduceNode extends Node {
+
+    /**
+     * key holds the key the reducer will reduce by
+     */
+    private Object key;
+
+    /**
+     * output holds the output
+     */
+    private Tuple output;
+
+    /**
+     * Constructor with arguments
+     * <p>
+     * Takes the mode and the ID and prepares the Node for execution of a Job part
+     * </p>
+     *
+     * @param id is the ID for the node
+     */
+    public ReduceNode(String id) {
+        super(id);
+    }
+
+    /**
+     * Function run()
+     * <p>
+     *     Sets the input to the passed data and runs the operation
+     * </p>
+     * @param key is the key to reduce by
+     * @param input is the data to work on
+     */
+    public void run(Object key, ArrayList<Tuple> input) {
+        setInput(input);
+        this.key = key;
+        run();
+    }
+
+    /**
+     * Function run()
+     * <p>
+     *     Runs the thread
+     * </p>
+     */
+    @Override
+    public void run() {
+        ArrayList<Tuple> input = (ArrayList<Tuple>) getInput();
+        output = getTask().reduce(key, input);
+    }
 }

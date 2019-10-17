@@ -41,6 +41,7 @@ public class MapNode extends Node {
      */
     @Override
     public void run() {
-        getTask().map(getInput());
+        ArrayList<Object> input = (ArrayList<Object>) getInput();
+        getTask().map(input);
     }
 }

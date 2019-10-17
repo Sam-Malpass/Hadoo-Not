@@ -25,12 +25,12 @@ public abstract class Node implements Runnable {
     /**
      * input holds the data to be passed to the node
      */
-    private ArrayList<Object> input;
+    private Object input;
 
     /**
      * output holds the data output by the node
      */
-    private ArrayList<Object> output;
+    private Object output;
 
     /**
      * task holds the Job to be run
@@ -88,7 +88,7 @@ public abstract class Node implements Runnable {
      * </p>
      * @return the input data
      */
-    public ArrayList<Object> getInput() {
+    public Object getInput() {
         return input;
     }
 
@@ -99,7 +99,7 @@ public abstract class Node implements Runnable {
      * </p>
      * @return the output data
      */
-    public ArrayList<Object> getOutput() {
+    public Object getOutput() {
         return output;
     }
 
@@ -143,7 +143,7 @@ public abstract class Node implements Runnable {
      * </p>
      * @param input is the input for the application
      */
-    public void setInput(ArrayList<Object> input) {
+    public void setInput(Object input) {
         this.input = input;
     }
 }
