@@ -47,4 +47,92 @@ public abstract class Node implements Runnable {
     public Node(String id) {
         this.threadID = id;
     }
+
+    /**
+     * Function setup()
+     * <p>
+     *     Sets the task to passed Job object, which should be user defined
+     * </p>
+     * @param passedTask is the task to be run
+     */
+    public void setup(Job passedTask) {
+        task = passedTask;
+    }
+
+    /**
+     * Function start()
+     * <p>
+     *     Starts the thread
+     * </p>
+     */
+    public void start() {
+        if(thread == null) {
+            thread = new Thread(this, threadID);
+            thread.start();
+        }
+    }
+
+    /**
+     * Function run()
+     * <p>
+     *     Executes the nodes task
+     * </p>
+     */
+    @Override
+    public abstract void run();
+
+    /**
+     * Function getInput()
+     * <p>
+     *     Return the input data
+     * </p>
+     * @return the input data
+     */
+    public ArrayList<Object> getInput() {
+        return input;
+    }
+
+    /**
+     * Function getOutput()
+     * <p>
+     *     Return the output data
+     * </p>
+     * @return the output data
+     */
+    public ArrayList<Object> getOutput() {
+        return output;
+    }
+
+    /**
+     * Function getThread()
+     * <p>
+     *     Return the thread
+     * </p>
+     * @return the thread
+     */
+    public Thread getThread() {
+        return thread;
+    }
+
+    /**
+     * Function getThreadID()
+     * <p>
+     *     Return the threadID
+     * </p>
+     * @return the threadID
+     */
+    public String getThreadID() {
+        return threadID;
+    }
+
+    /**
+     * Function setInput()
+     * <p>
+     *     Sets the input to the passed data
+     * </p>
+     * @param input is the input for the application
+     */
+    public void setInput(ArrayList<Object> input) {
+        this.input = input;
+    }
 }
