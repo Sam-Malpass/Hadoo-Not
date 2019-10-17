@@ -24,11 +24,36 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
+
+    /**
+     * console holds the TextArea for the console
+     */
     @FXML
     private TextArea console;
+
+    /**
+     * ps holds the PrintStream object
+     */
     private PrintStream ps;
+
+    /**
+     * setup says whether a job has been setup
+     */
     private static boolean setup = false;
+
+    /**
+     * jobParameters holds a list of parameter Strings
+     */
     private static ArrayList<String> jobParameters;
+
+    /**
+     * Function initialize()
+     * <p>
+     *     Initialize the controller
+     * </p>
+     * @param url is the file path
+     * @param resourceBundle is the resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         console.setEditable(false);
@@ -37,6 +62,12 @@ public class MainScreenController implements Initializable {
         System.setOut(ps);
     }
 
+    /**
+     * Function setupJob()
+     * <p>
+     *     Opens the dialog for the setup job and uses the result(s) to gather parameters
+     * </p>
+     */
     @FXML
     private void setupJob() {
         Scene tmp = null;
@@ -59,22 +90,40 @@ public class MainScreenController implements Initializable {
             jobParameters.add(SetupWindowController.getClassName());
             jobParameters.add(SetupWindowController.getData());
             jobParameters.add(SetupWindowController.getOutput());
-            writeConsole("[SYSTEM] Job parameters setup up");
+            System.out.println("[SYSTEM] Job parameters setup up");
         }
     }
 
+    /**
+     * Function run()
+     * <p>
+     *     Checks if there is a job set up and if there is, run it
+     * </p>
+     */
     @FXML
     private void run() {
         if(setup) {
-            Process p = new Process(10, jobParameters.get(0), jobParameters.get(1).replace(".class", ""));
-            p.start(jobParameters.get(2), jobParameters.get(3));
-            writeConsole("[SYSTEM] Beginning Job...");
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Process p = new Process(10, jobParameters.get(0), jobParameters.get(1).replace(".class", ""));
+                    p.start(jobParameters.get(2), jobParameters.get(3));
+                }
+            });
+            System.out.println("[SYSTEM] Beginning Job...");
+            thread.start();
         }
         else {
             System.err.println("[ERROR] Job not setup");
         }
     }
 
+    /**
+     * Function about()
+     * <p>
+     *     Creates an alert with the version number and author
+     * </p>
+     */
     @FXML
     private void about() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -84,11 +133,23 @@ public class MainScreenController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Function help()
+     * <p>
+     *
+     * </p>
+     */
     @FXML
     private void help() {
 
     }
 
+    /**
+     * Function openOutput()
+     * <p>
+     *     Opens the output folder in the file explorer
+     * </p>
+     */
     @FXML
     private void openOutput() {
         try {
@@ -99,14 +160,6 @@ public class MainScreenController implements Initializable {
         }
     }
 
-
-    public void writeConsole(String text) {
-        console.appendText(text + "\n");
-    }
-
-    public void clearConsole() {
-        console.clear();
-    }
     public class Console extends OutputStream {
         private TextArea console;
 

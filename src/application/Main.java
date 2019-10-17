@@ -6,13 +6,10 @@
  */
 package application;
 
-import graphicalUserInterface.controllers.MainScreenController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.SplitPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class Main extends Application{
@@ -48,6 +45,14 @@ public class Main extends Application{
         this.mainStage.setScene(this.mainScene);
     }
 
+    /**
+     * Function start()
+     * <p>
+     *     Starts the application
+     * </p>
+     * @param stage is the window to use
+     * @throws Exception if there is a failure
+     */
     @Override
     public void start(Stage stage) throws Exception {
         this.mainStage = stage;

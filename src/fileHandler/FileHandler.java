@@ -74,6 +74,14 @@ public class FileHandler {
         return jarLoader.createObject(jarPath, className);
     }
 
+    /**
+     * Function listClasses()
+     * <p>
+     *     Lists all the classes that are in a JAR and not included in the Hadoo-Not library
+     * </p>
+     * @param jarName is the path to the JAR
+     * @return the list of classes
+     */
     public ArrayList<String> listClasses(String jarName) {
         return this.jarLoader.getClassNames(jarName);
     }
