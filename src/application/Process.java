@@ -255,8 +255,9 @@ public class Process {
 
         /*COMBINER*/
         System.out.println("[COMBINER] Beginning Combining...");
+        int count = 0;
         for(ArrayList<Tuple> t : partitionedOutput) {
-            CombinerNode combinerNode = new CombinerNode("CombinerNode" + t.get(0).getKey());
+            CombinerNode combinerNode = new CombinerNode("CombinerNode" + count++);
             System.out.println("[COMBINER] Starting node: " + combinerNode.getThreadID());
             combinerNode.start(t);
             combinerNodes.add(combinerNode);
@@ -274,8 +275,9 @@ public class Process {
 
         /* REDUCE */
         System.out.println("[REDUCER] Beginning reducing...");
+        count = 0;
         for(Tuple t : combinerOutput) {
-            ReduceNode reducerNode = new ReduceNode( "ReducerNode" + t.getKey());
+            ReduceNode reducerNode = new ReduceNode( "ReducerNode" + count++);
             //reducerNode.setInput(shuffledOutput);
             System.out.println("[REDUCER] Starting node: " + reducerNode.getThreadID());
             reducerNode.start(t);
