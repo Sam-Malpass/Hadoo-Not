@@ -233,15 +233,15 @@ public class Process {
             MapNode mapperNode = new MapNode( "MapperNode" + dataChunks.indexOf(block));
             mapperNode.setInput(block);
             mapperNode.start();
-            System.out.println("[MAPPER] Starting node: " + mapperNode.getThreadID());
             mapperNodes.add(mapperNode);
         }
-        System.out.println("[MAPPER] Total mapper nodes: " + mapperNodes.size() + "!");
         //Join all executing threads
+        float percentageCalc = 1;
         for(Node n : mapperNodes) {
             try {
                 n.getThread().join();
-                System.out.println("[MAPPER] Joining node: " + n.getThreadID());
+                System.out.println("[MAPPER] Map at " + percentageCalc/mapperNodes.size()*100 + "% Complete");
+                percentageCalc++;
             }
             catch (Exception e) {
                 System.err.println("[ERROR] Failed to join mapper thread with ID: " + n.getThreadID());
@@ -255,10 +255,9 @@ public class Process {
 
         /*COMBINER*/
         System.out.println("[COMBINER] Beginning Combining...");
-        int count = 0;
+        percentageCalc = 0;
         for(ArrayList<Tuple> t : partitionedOutput) {
-            CombinerNode combinerNode = new CombinerNode("CombinerNode" + count++);
-            System.out.println("[COMBINER] Starting node: " + combinerNode.getThreadID());
+            CombinerNode combinerNode = new CombinerNode("CombinerNode" + partitionedOutput.indexOf(t));
             combinerNode.start(t);
             combinerNodes.add(combinerNode);
         }
@@ -266,7 +265,8 @@ public class Process {
             try {
                 n.getThread().join();
                 combinerOutput.add((Tuple) n.getOutput());
-                System.out.println("[COMBINER] Joining node: " + n.getThreadID());
+                System.out.println("[COMBINER] Combine at: " + percentageCalc/combinerNodes.size()*100 + "% Complete");
+                percentageCalc++;
             }
             catch (Exception e) {
                 System.err.println("[COMBINER] Failed to join reducer thread with ID: " + n.getThreadID());
@@ -275,20 +275,18 @@ public class Process {
 
         /* REDUCE */
         System.out.println("[REDUCER] Beginning reducing...");
-        count = 0;
+        percentageCalc = 0;
         for(Tuple t : combinerOutput) {
-            ReduceNode reducerNode = new ReduceNode( "ReducerNode" + count++);
-            //reducerNode.setInput(shuffledOutput);
-            System.out.println("[REDUCER] Starting node: " + reducerNode.getThreadID());
+            ReduceNode reducerNode = new ReduceNode( "ReducerNode" + combinerOutput.indexOf(t));
             reducerNode.start(t);
             reducerNodes.add(reducerNode);
         }
-        System.out.println("[REDUCER] Total reducer nodes: " + reducerNodes.size() + "!");
         //Join all executing threads
         for(Node n : reducerNodes) {
             try {
                 n.getThread().join();
-                System.out.println("[REDUCER] Joining node: " + n.getThreadID());
+                System.out.println("[REDUCER] Reduce at: " + percentageCalc/reducerNodes.size()*100 + "% Complete");
+                percentageCalc++;
             }
             catch (Exception e) {
                 System.err.println("[ERROR] Failed to join reducer thread with ID: " + n.getThreadID());
