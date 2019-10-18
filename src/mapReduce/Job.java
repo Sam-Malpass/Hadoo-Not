@@ -42,8 +42,7 @@ public abstract class Job {
      * <p>
      *     User can define how to perform reduce task for given output from mapper threads to return a singular Tuple
      * </p>
-     * @param key is the key to reduce by
-     * @param input is the sorted output from the mappers
+     * @param t is a tuple to perform reduction on
      * @return the reduced Tuple
      */
     public abstract Tuple reduce(Tuple t);

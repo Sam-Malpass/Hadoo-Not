@@ -46,7 +46,7 @@ public class Process {
     private ArrayList<ReduceNode> reducerNodes = new ArrayList<>();
 
     /**
-     *
+     *combinerNodes holds a list of all the Nodes that combine
      */
     private ArrayList<CombinerNode> combinerNodes = new ArrayList<>();
 
@@ -61,7 +61,7 @@ public class Process {
     private ArrayList<ArrayList<Tuple>> partitionedOutput = new ArrayList<>();
 
     /**
-     *
+     * combinerOutput holds the output of the combiner(s)
      */
     private ArrayList<Tuple> combinerOutput = new ArrayList<>();
 
