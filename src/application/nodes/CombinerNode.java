@@ -25,7 +25,7 @@ public class CombinerNode extends Node {
      * </p>
      * @param input is the input for the combiner
      */
-    public void start(ArrayList<Object> input) {
+    public void start(ArrayList<Tuple> input) {
         this.setInput(input);
         super.start();
     }

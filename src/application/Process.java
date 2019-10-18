@@ -6,13 +6,13 @@
  */
 package application;
 
+import application.nodes.CombinerNode;
 import application.nodes.MapNode;
 import application.nodes.ReduceNode;
 import application.nodes.Node;
 import fileHandler.FileHandler;
 import fileHandler.JarLoader;
 import mapReduce.Job;
-//import mapReduce.Node;
 import mapReduce.Tuple;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,6 +46,11 @@ public class Process {
     private ArrayList<ReduceNode> reducerNodes = new ArrayList<>();
 
     /**
+     *
+     */
+    private ArrayList<CombinerNode> combinerNodes = new ArrayList<>();
+
+    /**
      * shuffledOutput holds a sorted list of all map Node outputs
      */
     private ArrayList<Tuple> shuffledOutput = new ArrayList<>();
@@ -54,6 +59,11 @@ public class Process {
      * partitionedOutput holds the partitioned output of the sorted mapper outputs
      */
     private ArrayList<ArrayList<Tuple>> partitionedOutput = new ArrayList<>();
+
+    /**
+     *
+     */
+    private ArrayList<Tuple> combinerOutput = new ArrayList<>();
 
     /**
      * finalOutput holds the results from the reduce Nodes
@@ -243,13 +253,31 @@ public class Process {
         ArrayList<Object> keySet = generateKeySet();
         partition(keySet);
 
+        /*COMBINER*/
+        System.out.println("[COMBINER] Beginning Combining...");
+        for(ArrayList<Tuple> t : partitionedOutput) {
+            CombinerNode combinerNode = new CombinerNode("CombinerNode" + t.get(0).getKey());
+            System.out.println("[COMBINER] Starting node: " + combinerNode.getThreadID());
+            combinerNode.start(t);
+            combinerNodes.add(combinerNode);
+        }
+        for(Node n : combinerNodes) {
+            try {
+                n.getThread().join();
+                System.out.println("[COMBINER] Joining node: " + n.getThreadID());
+            }
+            catch (Exception e) {
+                System.err.println("[COMBINER] Failed to join reducer thread with ID: " + n.getThreadID());
+            }
+        }
+
         /* REDUCE */
         System.out.println("[REDUCER] Beginning reducing...");
         for(ArrayList<Tuple> t : partitionedOutput) {
             ReduceNode reducerNode = new ReduceNode( "ReducerNode" + keySet.indexOf(t.get(0).getKey()));
             //reducerNode.setInput(shuffledOutput);
             System.out.println("[REDUCER] Starting node: " + reducerNode.getThreadID());
-            reducerNode.start(t.get(0).getKey(), shuffledOutput);
+            reducerNode.start(t.get(0).getKey(), t);
             reducerNodes.add(reducerNode);
         }
         System.out.println("[REDUCER] Total reducer nodes: " + reducerNodes.size() + "!");
