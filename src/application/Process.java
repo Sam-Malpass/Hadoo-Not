@@ -51,6 +51,11 @@ public class Process {
     private ArrayList<Tuple> shuffledOutput = new ArrayList<>();
 
     /**
+     * partitionedOutput holds the partitioned output of the sorted mapper outputs
+     */
+    private ArrayList<ArrayList<Tuple>> partitionedOutput = new ArrayList<>();
+
+    /**
      * finalOutput holds the results from the reduce Nodes
      */
     private ArrayList<Tuple> finalOutput = new ArrayList<>();
@@ -115,6 +120,23 @@ public class Process {
                 return o1.getKey().toString().compareToIgnoreCase(o2.getKey().toString());
             }
         });
+    }
+
+    private void partition(ArrayList<Object> keySet) {
+        int startingIndex = 0;
+        for(Object k : keySet) {
+            ArrayList<Tuple> partition = new ArrayList<>();
+            for(int i = startingIndex; i <shuffledOutput.size(); i++) {
+                if(shuffledOutput.get(i).getKey().toString().equals(k.toString())) {
+                    partition.add(shuffledOutput.get(i));
+                }
+                else {
+                    partitionedOutput.add(partition);
+                    startingIndex = i;
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -219,14 +241,15 @@ public class Process {
         /* SHUFFLE/SORT */
         shuffle();
         ArrayList<Object> keySet = generateKeySet();
+        partition(keySet);
 
         /* REDUCE */
         System.out.println("[REDUCER] Beginning reducing...");
-        for(Object key : keySet) {
-            ReduceNode reducerNode = new ReduceNode( "ReducerNode" + keySet.indexOf(key));
+        for(ArrayList<Tuple> t : partitionedOutput) {
+            ReduceNode reducerNode = new ReduceNode( "ReducerNode" + keySet.indexOf(t.get(0).getKey()));
             //reducerNode.setInput(shuffledOutput);
             System.out.println("[REDUCER] Starting node: " + reducerNode.getThreadID());
-            reducerNode.start(key, shuffledOutput);
+            reducerNode.start(t.get(0).getKey(), shuffledOutput);
             reducerNodes.add(reducerNode);
         }
         System.out.println("[REDUCER] Total reducer nodes: " + reducerNodes.size() + "!");
