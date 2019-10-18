@@ -46,7 +46,7 @@ public abstract class Job {
      * @param input is the sorted output from the mappers
      * @return the reduced Tuple
      */
-    public abstract Tuple reduce(Object key, ArrayList<Tuple> input);
+    public abstract Tuple reduce(Tuple t);
 
     /**
      * Function format()

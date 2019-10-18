@@ -264,6 +264,7 @@ public class Process {
         for(Node n : combinerNodes) {
             try {
                 n.getThread().join();
+                combinerOutput.add((Tuple) n.getOutput());
                 System.out.println("[COMBINER] Joining node: " + n.getThreadID());
             }
             catch (Exception e) {
@@ -273,11 +274,11 @@ public class Process {
 
         /* REDUCE */
         System.out.println("[REDUCER] Beginning reducing...");
-        for(ArrayList<Tuple> t : partitionedOutput) {
-            ReduceNode reducerNode = new ReduceNode( "ReducerNode" + keySet.indexOf(t.get(0).getKey()));
+        for(Tuple t : combinerOutput) {
+            ReduceNode reducerNode = new ReduceNode( "ReducerNode" + t.getKey());
             //reducerNode.setInput(shuffledOutput);
             System.out.println("[REDUCER] Starting node: " + reducerNode.getThreadID());
-            reducerNode.start(t.get(0).getKey(), t);
+            reducerNode.start(t);
             reducerNodes.add(reducerNode);
         }
         System.out.println("[REDUCER] Total reducer nodes: " + reducerNodes.size() + "!");

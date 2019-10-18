@@ -33,12 +33,10 @@ public class ReduceNode extends Node {
      * <p>
      *     Sets the input to the passed data and runs the operation
      * </p>
-     * @param key is the key to reduce by
-     * @param input is the data to work on
+     * @param t is the tuple to reduce
      */
-    public void start(Object key, ArrayList<Tuple> input) {
-        setInput(input);
-        this.key = key;
+    public void start(Tuple t) {
+        setInput(t);
         super.start();
     }
 
@@ -50,7 +48,7 @@ public class ReduceNode extends Node {
      */
     @Override
     public void run() {
-        ArrayList<Tuple> input = (ArrayList<Tuple>) getInput();
-        setOutput(getTask().reduce(key, input));
+        Tuple input = (Tuple) getInput();
+        setOutput(getTask().reduce(input));
     }
 }
