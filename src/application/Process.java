@@ -114,12 +114,12 @@ public class Process {
     }
 
     /**
-     * Function shuffle()
+     * Function shuffleSort()
      * <p>
      *     Collects all the map outputs across all mapperNodes and then sorts them all by key
      * </p>
      */
-    private void shuffle() {
+    private void shuffleSort() {
         for(Node n : mapperNodes) {
              ArrayList<Tuple> mapperOutput = (ArrayList<Tuple>) n.getOutput();
             shuffledOutput.addAll(mapperOutput);
@@ -249,7 +249,7 @@ public class Process {
         }
         System.out.println("[MAPPER] Mapping completed!\n");
         /* SHUFFLE/SORT */
-        shuffle();
+        shuffleSort();
         ArrayList<Object> keySet = generateKeySet();
         partition(keySet);
 
