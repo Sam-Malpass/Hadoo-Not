@@ -1,18 +1,18 @@
 /**
  * Process
  * @author Sam Malpass
- * @version 0.0.4
+ * @version 0.0.5
  * @since 0.0.1
  */
 package application;
 
+import application.nodes.CombinerNode;
 import application.nodes.MapNode;
 import application.nodes.ReduceNode;
 import application.nodes.Node;
 import fileHandler.FileHandler;
 import fileHandler.JarLoader;
 import mapReduce.Job;
-//import mapReduce.Node;
 import mapReduce.Tuple;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,9 +46,24 @@ public class Process {
     private ArrayList<ReduceNode> reducerNodes = new ArrayList<>();
 
     /**
+     *combinerNodes holds a list of all the Nodes that combine
+     */
+    private ArrayList<CombinerNode> combinerNodes = new ArrayList<>();
+
+    /**
      * shuffledOutput holds a sorted list of all map Node outputs
      */
     private ArrayList<Tuple> shuffledOutput = new ArrayList<>();
+
+    /**
+     * partitionedOutput holds the partitioned output of the sorted mapper outputs
+     */
+    private ArrayList<ArrayList<Tuple>> partitionedOutput = new ArrayList<>();
+
+    /**
+     * combinerOutput holds the output of the combiner(s)
+     */
+    private ArrayList<Tuple> combinerOutput = new ArrayList<>();
 
     /**
      * finalOutput holds the results from the reduce Nodes
@@ -99,12 +114,12 @@ public class Process {
     }
 
     /**
-     * Function shuffle()
+     * Function shuffleSort()
      * <p>
      *     Collects all the map outputs across all mapperNodes and then sorts them all by key
      * </p>
      */
-    private void shuffle() {
+    private void shuffleSort() {
         for(Node n : mapperNodes) {
              ArrayList<Tuple> mapperOutput = (ArrayList<Tuple>) n.getOutput();
             shuffledOutput.addAll(mapperOutput);
@@ -115,6 +130,23 @@ public class Process {
                 return o1.getKey().toString().compareToIgnoreCase(o2.getKey().toString());
             }
         });
+    }
+
+    private void partition(ArrayList<Object> keySet) {
+        int startingIndex = 0;
+        for(Object k : keySet) {
+            ArrayList<Tuple> partition = new ArrayList<>();
+            for(int i = startingIndex; i <shuffledOutput.size(); i++) {
+                if(shuffledOutput.get(i).getKey().toString().equals(k.toString())) {
+                    partition.add(shuffledOutput.get(i));
+                }
+                else {
+                    partitionedOutput.add(partition);
+                    startingIndex = i;
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -201,15 +233,15 @@ public class Process {
             MapNode mapperNode = new MapNode( "MapperNode" + dataChunks.indexOf(block));
             mapperNode.setInput(block);
             mapperNode.start();
-            System.out.println("[MAPPER] Starting node: " + mapperNode.getThreadID());
             mapperNodes.add(mapperNode);
         }
-        System.out.println("[MAPPER] Total mapper nodes: " + mapperNodes.size() + "!");
         //Join all executing threads
+        float percentageCalc = 1;
         for(Node n : mapperNodes) {
             try {
                 n.getThread().join();
-                System.out.println("[MAPPER] Joining node: " + n.getThreadID());
+                System.out.println("[MAPPER] Map at " + percentageCalc/mapperNodes.size()*100 + "% Complete");
+                percentageCalc++;
             }
             catch (Exception e) {
                 System.err.println("[ERROR] Failed to join mapper thread with ID: " + n.getThreadID());
@@ -217,24 +249,44 @@ public class Process {
         }
         System.out.println("[MAPPER] Mapping completed!\n");
         /* SHUFFLE/SORT */
-        shuffle();
+        shuffleSort();
         ArrayList<Object> keySet = generateKeySet();
+        partition(keySet);
+
+        /*COMBINER*/
+        System.out.println("[COMBINER] Beginning Combining...");
+        percentageCalc = 0;
+        for(ArrayList<Tuple> t : partitionedOutput) {
+            CombinerNode combinerNode = new CombinerNode("CombinerNode" + partitionedOutput.indexOf(t));
+            combinerNode.start(t);
+            combinerNodes.add(combinerNode);
+        }
+        for(Node n : combinerNodes) {
+            try {
+                n.getThread().join();
+                combinerOutput.add((Tuple) n.getOutput());
+                System.out.println("[COMBINER] Combine at: " + percentageCalc/combinerNodes.size()*100 + "% Complete");
+                percentageCalc++;
+            }
+            catch (Exception e) {
+                System.err.println("[COMBINER] Failed to join reducer thread with ID: " + n.getThreadID());
+            }
+        }
 
         /* REDUCE */
         System.out.println("[REDUCER] Beginning reducing...");
-        for(Object key : keySet) {
-            ReduceNode reducerNode = new ReduceNode( "ReducerNode" + keySet.indexOf(key));
-            //reducerNode.setInput(shuffledOutput);
-            System.out.println("[REDUCER] Starting node: " + reducerNode.getThreadID());
-            reducerNode.start(key, shuffledOutput);
+        percentageCalc = 0;
+        for(Tuple t : combinerOutput) {
+            ReduceNode reducerNode = new ReduceNode( "ReducerNode" + combinerOutput.indexOf(t));
+            reducerNode.start(t);
             reducerNodes.add(reducerNode);
         }
-        System.out.println("[REDUCER] Total reducer nodes: " + reducerNodes.size() + "!");
         //Join all executing threads
         for(Node n : reducerNodes) {
             try {
                 n.getThread().join();
-                System.out.println("[REDUCER] Joining node: " + n.getThreadID());
+                System.out.println("[REDUCER] Reduce at: " + percentageCalc/reducerNodes.size()*100 + "% Complete");
+                percentageCalc++;
             }
             catch (Exception e) {
                 System.err.println("[ERROR] Failed to join reducer thread with ID: " + n.getThreadID());

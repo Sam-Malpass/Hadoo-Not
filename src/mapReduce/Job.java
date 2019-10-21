@@ -1,7 +1,7 @@
 /**
  * Job
  * @author Sam Malpass
- * @version 0.0.4
+ * @version 0.0.5
  * @since 0.0.0
  */
 package mapReduce;
@@ -42,11 +42,10 @@ public abstract class Job {
      * <p>
      *     User can define how to perform reduce task for given output from mapper threads to return a singular Tuple
      * </p>
-     * @param key is the key to reduce by
-     * @param input is the sorted output from the mappers
+     * @param t is a tuple to perform reduction on
      * @return the reduced Tuple
      */
-    public abstract Tuple reduce(Object key, ArrayList<Tuple> input);
+    public abstract Tuple reduce(Tuple t);
 
     /**
      * Function format()

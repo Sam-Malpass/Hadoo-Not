@@ -64,6 +64,3 @@ Total Flights: 1
 Airport: PVG
 Total Flights: 1
 
-Airport: UGK
-Total Flights: 1
-

@@ -1,23 +1,26 @@
 /**
- * MapNode
+ * CombinerNode
  * @author Sam Malpass
  * @version 0.0.5
- * @since 0.0.4
+ * @since 0.0.5
  */
 package application.nodes;
 
+import mapReduce.Tuple;
+
 import java.util.ArrayList;
 
-public class MapNode extends Node {
+public class CombinerNode extends Node {
 
     /**
      * Constructor with arguments
      * <p>
      * Takes the mode and the ID and prepares the Node for execution of a Job part
      * </p>
+     *
      * @param id is the ID for the node
      */
-    public MapNode(String id) {
+    public CombinerNode(String id) {
         super(id);
     }
 
@@ -26,9 +29,9 @@ public class MapNode extends Node {
      * <p>
      *     Sets the input and runs the thread
      * </p>
-     * @param input is the input to operate on
+     * @param input is the input for the combiner
      */
-    public void start(ArrayList<Object> input) {
+    public void start(ArrayList<Tuple> input) {
         this.setInput(input);
         super.start();
     }
@@ -41,7 +44,12 @@ public class MapNode extends Node {
      */
     @Override
     public void run() {
-        ArrayList<Object> input = (ArrayList<Object>) getInput();
-        setOutput(getTask().map(input));
+        ArrayList<Tuple> input = (ArrayList<Tuple>) this.getInput();
+        ArrayList<Object> totalObjects = new ArrayList<>();
+        Object key = input.get(0).getKey();
+        for(Tuple t : input) {
+            totalObjects.add(t.getValue());
+        }
+        setOutput(new Tuple(key, totalObjects));
     }
 }
