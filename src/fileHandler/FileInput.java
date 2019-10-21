@@ -9,6 +9,7 @@ package fileHandler;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FileInput {
 
@@ -36,6 +37,25 @@ public class FileInput {
             while((line = reader.readLine()) != null) {
                 lines.add(line);
             }
+            reader.close();
+        }
+        catch (Exception e) {
+            System.err.println("[ERROR] File not found");
+        }
+        return lines;
+    }
+
+    public ArrayList<String> readHead(String filePath) {
+        ArrayList<String> lines = new ArrayList<>();
+        String line;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            int i = 0;
+            while ((line = reader.readLine()) != null && i < 20) {
+                lines.add(line);
+                i++;
+            }
+            reader.close();
         }
         catch (Exception e) {
             System.err.println("[ERROR] File not found");

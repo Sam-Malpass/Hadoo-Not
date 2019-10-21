@@ -53,14 +53,26 @@ public class EZJob extends Job {
             ArrayList<String> rowList = new ArrayList(Arrays.asList(row));
             boolean bad = false;
             for(String x : rowList) {
-                if(x.equals(null) || x.isEmpty() || x.isBlank()) {
+                if(x.isEmpty() || x.isBlank() || !x.matches("[A-Za-z0-9]*")) {
                     bad = true;
                     System.out.println("[PREPROCESSOR] Removed erroneous data entry!");
                 }
             }
             if(!bad) {
                 data.addAll(rowList);
-                dataEntries.add(data);
+                for(Object d : dataEntries) {
+                    ArrayList<Object> x = (ArrayList) d;
+                    if(data.get(keyIndex).equals(x.get(keyIndex))) {
+                        for(Integer i : valueIndices) {
+                            if(data.get(i).equals(x.get(i))) {
+                                bad = true;
+                            }
+                        }
+                    }
+                }
+                if(!bad) {
+                    dataEntries.add(rowList);
+                }
             }
         }
         return dataEntries;

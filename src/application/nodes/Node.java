@@ -6,6 +6,7 @@
  */
 package application.nodes;
 
+import mapReduce.EZJob;
 import mapReduce.Job;
 
 import java.util.ArrayList;

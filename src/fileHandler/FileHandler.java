@@ -85,4 +85,8 @@ public class FileHandler {
     public ArrayList<String> listClasses(String jarName) {
         return this.jarLoader.getClassNames(jarName);
     }
+
+    public ArrayList<String> readHead(String filePath) {
+        return input.readHead(filePath);
+    }
 }

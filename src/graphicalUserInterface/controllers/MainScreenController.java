@@ -44,7 +44,7 @@ public class MainScreenController implements Initializable {
     /**
      * jobParameters holds a list of parameter Strings
      */
-    private static ArrayList<String> jobParameters;
+    private static ArrayList<String> jobParameters = new ArrayList<>();
 
     /**
      * Function initialize()
@@ -102,12 +102,25 @@ public class MainScreenController implements Initializable {
      */
     @FXML
     private void run() {
-        if(setup) {
+        if(setup && jobParameters.size() > 0) {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     Process p = new Process(10, jobParameters.get(0), jobParameters.get(1).replace(".class", ""));
                     p.start(jobParameters.get(2), jobParameters.get(3));
+                    jobParameters = new ArrayList<>();
+                }
+            });
+            System.out.println("[SYSTEM] Beginning Job...");
+            thread.start();
+        }
+        else if(setup && jobParameters.size() == 0) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Process p = new Process(10, EZSetupController.getSetup());
+                    String filePath = EZSetupController.getData();
+                    p.start(filePath, "TEST.txt");
                 }
             });
             System.out.println("[SYSTEM] Beginning Job...");
@@ -157,6 +170,26 @@ public class MainScreenController implements Initializable {
         }
         catch (Exception e) {
             System.err.println("[ERROR] Couldn't open the folder");
+        }
+    }
+
+    @FXML
+    private void ezSetup() {
+        Scene tmp = null;
+        Stage setupStage = new Stage();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("../FXML/EZSetup.fxml"));
+            tmp = new Scene(root, 640, 360);
+        }
+        catch(Exception e) {
+            System.err.println("[ERROR] Issue opening EZSetup.fxml");
+        }
+        setupStage.setScene(tmp);
+        setupStage.setResizable(false);
+        setupStage.setTitle("Setup Job...");
+        setupStage.showAndWait();
+        if(EZSetupController.getSetup() != null) {
+            setup = true;
         }
     }
 

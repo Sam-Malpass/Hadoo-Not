@@ -1,26 +1,30 @@
 package graphicalUserInterface.controllers;
 
+import fileHandler.FileHandler;
+import javafx.beans.Observable;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mapReduce.EZJob;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class EZSetupController implements Initializable {
     @FXML
     private TextField dataField;
-    private String data;
+    private static String data;
     @FXML
-    private TableView tableView;
+    private TableView<ObservableList<String>> tableView;
     @FXML
     private TextField keyField;
     private int keyIndex;
@@ -31,7 +35,7 @@ public class EZSetupController implements Initializable {
     private ComboBox selectorBox;
     private String job;
 
-    private EZJob setup = null;
+    private static EZJob setup = null;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ArrayList<String> jobs = new ArrayList<>();
@@ -54,6 +58,27 @@ public class EZSetupController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Data...");
         dataField.setText(fileChooser.showOpenDialog(stage).toString());
+        FileHandler fh = new FileHandler();
+        ArrayList<String> head = fh.readHead(dataField.getText());
+        ObservableList<ObservableList<String>> data = FXCollections.observableArrayList();
+        for(String h : head) {
+            String[] row = h.split(",");
+            ArrayList<String> rowList = new ArrayList<>(Arrays.asList(row));
+            data.add(FXCollections.observableList(rowList));
+        }
+        tableView.getColumns().clear();
+        tableView.setItems(data);
+        for (int i = 0; i < data.get(0).size(); i++) {
+            final int curCol = i;
+            final TableColumn<ObservableList<String>, String> column = new TableColumn<>(
+                    "Col " + (curCol + 1)
+            );
+            column.setCellValueFactory(
+                    param -> new ReadOnlyObjectWrapper<>(param.getValue().get(curCol))
+            );
+            tableView.getColumns().add(column);
+        }
+
     }
 
     /**
@@ -120,7 +145,11 @@ public class EZSetupController implements Initializable {
         }
     }
 
-    public EZJob getSetup() {
+    public static EZJob getSetup() {
         return setup;
+    }
+
+    public static String getData() {
+        return data;
     }
 }
