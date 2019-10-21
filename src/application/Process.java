@@ -206,6 +206,7 @@ public class Process {
      * @param outputPath is the file to output to
      */
     public void start(String inputPath, String outputPath) {
+        long startTime = System.nanoTime();
         /* SETUP JOB */
         try {
             JarLoader jarLoader = new JarLoader();
@@ -324,7 +325,8 @@ public class Process {
         /* OUTPUT */
         System.out.println("[SYSTEM] Writing output...");
         writeData(outputPath, task.format(finalOutput));
-        System.out.println("[SYSTEM] Job execution complete");
+        long endTime = System.nanoTime();
+        System.out.println("[SYSTEM] Job execution completed in " + (endTime-startTime)/1000000 + "ms");
     }
 }
 
