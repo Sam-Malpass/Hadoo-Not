@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="49.0" prefWidth="640.0" spacing="500.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="cancel" mnemonicParsing="false" text="Cancel" />
+            <Button fx:id="confirm" mnemonicParsing="false" text="Confirm" />
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+   <top>
+      <HBox alignment="CENTER" prefHeight="46.0" prefWidth="640.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="dataField" prefWidth="400.0" promptText="Select Data File..." />
+            <Button fx:id="browse" mnemonicParsing="false" text="Browse" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="201.0" prefWidth="640.0">
+               <children>
+                  <TableView fx:id="tableView" prefHeight="201.0" prefWidth="614.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="C1" />
+                      <TableColumn prefWidth="75.0" text="C2" />
+                    </columns>
+                  </TableView>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="64.0" prefWidth="640.0" spacing="310.0">
+               <children>
+                  <TextField fx:id="keyField" promptText="Enter Key Column...">
+                     <tooltip>
+                        <Tooltip fx:id="keyTooltip" text="Enter the number of the column, e.g. column 1 would be &quot;1&quot;" />
+                     </tooltip>
+                  </TextField>
+                  <TextField fx:id="valueField" promptText="Enter Value Column(s)...">
+                     <tooltip>
+                        <Tooltip fx:id="valueTooltip" text="Enter the number(s) of the columns to use as the value(s), e.g. column 1 and 2 would be 1,2" />
+                     </tooltip>
+                  </TextField>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
