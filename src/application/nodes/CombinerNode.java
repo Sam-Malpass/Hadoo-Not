@@ -1,3 +1,9 @@
+/**
+ * CombinerNode
+ * @author Sam Malpass
+ * @version 0.0.5
+ * @since 0.0.5
+ */
 package application.nodes;
 
 import mapReduce.Tuple;
