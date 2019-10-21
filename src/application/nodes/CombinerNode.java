@@ -1,7 +1,7 @@
 /**
  * CombinerNode
  * @author Sam Malpass
- * @version 0.0.5
+ * @version 0.0.6
  * @since 0.0.5
  */
 package application.nodes;
@@ -31,7 +31,7 @@ public class CombinerNode extends Node {
      * </p>
      * @param input is the input for the combiner
      */
-    public void start(ArrayList<Tuple> input) {
+    public void start(ArrayList<ArrayList<Tuple>> input) {
         this.setInput(input);
         super.start();
     }
@@ -44,12 +44,16 @@ public class CombinerNode extends Node {
      */
     @Override
     public void run() {
-        ArrayList<Tuple> input = (ArrayList<Tuple>) this.getInput();
-        ArrayList<Object> totalObjects = new ArrayList<>();
-        Object key = input.get(0).getKey();
-        for(Tuple t : input) {
-            totalObjects.add(t.getValue());
+        ArrayList<ArrayList<Tuple>> input = (ArrayList<ArrayList<Tuple>>) this.getInput();
+        ArrayList<Tuple> output = new ArrayList<>();
+        for(ArrayList<Tuple> x : input) {
+            ArrayList<Object> totalObjects = new ArrayList<>();
+            Object key = x.get(0).getKey();
+            for (Tuple t : x) {
+                totalObjects.add(t.getValue());
+            }
+            output.add(new Tuple(key, totalObjects));
         }
-        setOutput(new Tuple(key, totalObjects));
+        setOutput(output);
     }
 }

@@ -1,7 +1,7 @@
 /**
  * Process
  * @author Sam Malpass
- * @version 0.0.5
+ * @version 0.0.6
  * @since 0.0.1
  */
 package application;
@@ -206,6 +206,7 @@ public class Process {
      * @param outputPath is the file to output to
      */
     public void start(String inputPath, String outputPath) {
+        long startTime = System.nanoTime();
         /* SETUP JOB */
         try {
             JarLoader jarLoader = new JarLoader();
@@ -256,15 +257,26 @@ public class Process {
         /*COMBINER*/
         System.out.println("[COMBINER] Beginning Combining...");
         percentageCalc = 0;
-        for(ArrayList<Tuple> t : partitionedOutput) {
-            CombinerNode combinerNode = new CombinerNode("CombinerNode" + partitionedOutput.indexOf(t));
-            combinerNode.start(t);
+        float numCombiners = mapperNodes.size();
+        float partitionsPerCombiner = (float) partitionedOutput.size() / numCombiners;
+        int partitionCounter = 0;
+        for (int i = 0; i < numCombiners; i++) {
+            ArrayList<ArrayList<Tuple>> combinerInput = new ArrayList<>();
+            for(int j = 0; j < partitionsPerCombiner; j++) {
+                if(partitionCounter == partitionedOutput.size()) {
+                    break;
+                }
+                combinerInput.add(partitionedOutput.get(partitionCounter));
+                partitionCounter++;
+            }
+            CombinerNode combinerNode = new CombinerNode("CombinerNode" + i);
+            combinerNode.start(combinerInput);
             combinerNodes.add(combinerNode);
         }
         for(Node n : combinerNodes) {
             try {
                 n.getThread().join();
-                combinerOutput.add((Tuple) n.getOutput());
+                combinerOutput.addAll((ArrayList<Tuple>)n.getOutput());
                 System.out.println("[COMBINER] Combine at: " + percentageCalc/combinerNodes.size()*100 + "% Complete");
                 percentageCalc++;
             }
@@ -272,13 +284,25 @@ public class Process {
                 System.err.println("[COMBINER] Failed to join reducer thread with ID: " + n.getThreadID());
             }
         }
+        System.out.println("[COMBINER] Combining Complete!\n");
 
         /* REDUCE */
         System.out.println("[REDUCER] Beginning reducing...");
         percentageCalc = 0;
-        for(Tuple t : combinerOutput) {
-            ReduceNode reducerNode = new ReduceNode( "ReducerNode" + combinerOutput.indexOf(t));
-            reducerNode.start(t);
+        float numReducers = mapperNodes.size();
+        float tuplesPerReducer = (float) combinerOutput.size() / numReducers;
+        int tupleCounter = 0;
+        for(int i = 0; i < numReducers; i++) {
+            ArrayList<Tuple> reducerInput = new ArrayList<>();
+            for(int j = 0; j < tuplesPerReducer; j++) {
+                if(tupleCounter == combinerOutput.size()) {
+                    break;
+                }
+                reducerInput.add(combinerOutput.get(tupleCounter));
+                tupleCounter++;
+            }
+            ReduceNode reducerNode = new ReduceNode("ReducerNode" + i);
+            reducerNode.start(reducerInput);
             reducerNodes.add(reducerNode);
         }
         //Join all executing threads
@@ -294,13 +318,15 @@ public class Process {
         }
         //Get all results
         for(Node n : reducerNodes) {
-            Tuple tmp = (Tuple) n.getOutput();
-            finalOutput.add(tmp);
+            finalOutput.addAll((ArrayList<Tuple>) n.getOutput());
         }
         System.out.println("[REDUCER] Reducing complete!\n");
 
         /* OUTPUT */
+        System.out.println("[SYSTEM] Writing output...");
         writeData(outputPath, task.format(finalOutput));
+        long endTime = System.nanoTime();
+        System.out.println("[SYSTEM] Job execution completed in " + (endTime-startTime)/1000000 + "ms");
     }
 }
 
