@@ -1,7 +1,7 @@
 /**
  * MapNode
  * @author Sam Malpass
- * @version 0.0.5
+ * @version 0.0.6
  * @since 0.0.4
  */
 package application.nodes;
