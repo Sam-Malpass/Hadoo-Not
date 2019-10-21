@@ -35,7 +35,7 @@ public class ReduceNode extends Node {
      * </p>
      * @param t is the tuple to reduce
      */
-    public void start(Tuple t) {
+    public void start(ArrayList<Tuple> t) {
         setInput(t);
         super.start();
     }
@@ -48,7 +48,7 @@ public class ReduceNode extends Node {
      */
     @Override
     public void run() {
-        Tuple input = (Tuple) getInput();
+        ArrayList<Tuple> input = (ArrayList<Tuple>) getInput();
         setOutput(getTask().reduce(input));
     }
 }
