@@ -147,9 +147,6 @@ public class Process {
                 return o1.getKey().toString().compareToIgnoreCase(o2.getKey().toString());
             }
         });
-        for(Tuple t : shuffledOutput) {
-            System.out.println(t.toString());
-        }
     }
 
     private void partition(ArrayList<Object> keySet) {

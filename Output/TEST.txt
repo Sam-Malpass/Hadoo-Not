@@ -1,0 +1,15 @@
+Key: AMS has count of 1
+Key: ATL has count of 1
+Key: BKK has count of 1
+Key: CAN has count of 2
+Key: CDG has count of 1
+Key: CGK has count of 1
+Key: DEN has count of 4
+Key: DFW has count of 1
+Key: FCO has count of 1
+Key: IAH has count of 2
+Key: KUL has count of 1
+Key: LAS has count of 1
+Key: LHR has count of 1
+Key: ORD has count of 1
+Key: PEK has count of 1

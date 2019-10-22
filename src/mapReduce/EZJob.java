@@ -47,13 +47,15 @@ public class EZJob extends Job {
     @Override
     public ArrayList<Object> preprocess(ArrayList<String> input) {
         ArrayList<Object> dataEntries = new ArrayList<>();
+        BruteRegex brute = new BruteRegex();
+        ArrayList<String> regexList =  brute.guessRegex(input, ",");
         for(String s : input) {
             ArrayList<Object> data = new ArrayList<>();
             String[] row = s.split(",");
             ArrayList<String> rowList = new ArrayList(Arrays.asList(row));
             boolean bad = false;
-            for(String x : rowList) {
-                if(x.isEmpty() || x.isBlank() || !x.matches("[A-Za-z0-9]*")) {
+            for(int i = 0; i < rowList.size(); i++) {
+                if(!rowList.get(i).matches(regexList.get(i))) {
                     bad = true;
                     System.out.println("[PREPROCESSOR] Removed erroneous data entry!");
                 }
