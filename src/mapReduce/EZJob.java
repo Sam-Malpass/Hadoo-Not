@@ -47,7 +47,7 @@ public class EZJob extends Job {
     @Override
     public ArrayList<Object> preprocess(ArrayList<String> input) {
         ArrayList<Object> dataEntries = new ArrayList<>();
-        BruteRegex brute = new BruteRegex();
+        RegGuess brute = new RegGuess();
         ArrayList<String> regexList =  brute.guessRegex(input, ",");
         for(String s : input) {
             ArrayList<Object> data = new ArrayList<>();

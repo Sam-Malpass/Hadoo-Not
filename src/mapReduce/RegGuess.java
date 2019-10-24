@@ -1,5 +1,5 @@
 /**
- * BruteRegex
+ * RegGuess
  * @author Sam Malpass
  * @version 0.0.7
  * @since 0.0.7
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class BruteRegex {
+public class RegGuess {
 
     /**
      * Constructor with no arguments
@@ -18,7 +18,7 @@ public class BruteRegex {
      *     Sets up the object
      * </p>
      */
-    public BruteRegex() {}
+    public RegGuess() {}
 
     /**
      * Function sample()
