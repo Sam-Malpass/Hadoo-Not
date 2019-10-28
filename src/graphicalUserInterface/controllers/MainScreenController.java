@@ -7,7 +7,7 @@
 package graphicalUserInterface.controllers;
 
 import application.Process;
-import javafx.application.Platform;
+import graphicalUserInterface.Console;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,8 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -173,6 +171,12 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * Function ezSetup()
+     * <p>
+     *     Opens the EZSetup window
+     * </p>
+     */
     @FXML
     private void ezSetup() {
         Scene tmp = null;
@@ -193,21 +197,4 @@ public class MainScreenController implements Initializable {
             System.out.print("[SYSTEM] Job Parameters Setup");
         }
     }
-
-    public class Console extends OutputStream {
-        private TextArea console;
-
-        public Console(TextArea console) {
-            this.console = console;
-        }
-
-        public void appendText(String valueOf) {
-            Platform.runLater(() -> console.appendText(valueOf));
-        }
-
-        public void write(int b) throws IOException {
-            appendText(String.valueOf((char)b));
-        }
-    }
-
 }

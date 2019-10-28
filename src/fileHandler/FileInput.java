@@ -45,6 +45,14 @@ public class FileInput {
         return lines;
     }
 
+    /**
+     * Function readHead()
+     * <p>
+     *     Opens and reads the top 20 lines of a file
+     * </p>
+     * @param filePath is the file to open
+     * @return the top 20 lines
+     */
     public ArrayList<String> readHead(String filePath) {
         ArrayList<String> lines = new ArrayList<>();
         String line;

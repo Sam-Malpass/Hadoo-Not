@@ -1,3 +1,9 @@
+/**
+ * EZSetupController
+ * @author Sam Malpass
+ * @version 0.0.7
+ * @since 0.0.7
+ */
 package graphicalUserInterface.controllers;
 
 import fileHandler.FileHandler;
@@ -17,22 +23,69 @@ import java.net.URL;
 import java.util.*;
 
 public class EZSetupController implements Initializable {
+    /**
+     * dataField allows the file path for the data to be input
+     */
     @FXML
     private TextField dataField;
+
+    /**
+     * data holds a String of the file path for the data
+     */
     private static String data;
+
+    /**
+     * tableView allows the input data to be visualized
+     */
     @FXML
     private TableView<ObservableList<String>> tableView;
+
+    /**
+     * keyField allows the index of the key to be input
+     */
     @FXML
     private TextField keyField;
+
+    /**
+     * keyIndex holds the index number of the column to use as a key
+     */
     private int keyIndex;
+
+    /**
+     * valueField allows a list of columns to be selected
+     */
     @FXML
     private TextField valueField;
+
+    /**
+     * values holds a list of numbers to act as the column indexes for the values
+     */
     private ArrayList<Integer> values;
+
+    /**
+     * selectorBox allows the job type to be selected
+     */
     @FXML
     private ComboBox selectorBox;
+
+    /**
+     * job holds a String of the job type
+     */
     private String job;
 
+    /**
+     * setup holds an EZJob
+     */
     private static EZJob setup = null;
+
+    /**
+     * Function initialize()
+     * <p>
+     *     Initialize the controller
+     * </p>
+     * @param url is the file path
+     * @param resourceBundle is the resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ArrayList<String> jobs = new ArrayList<>();
@@ -142,10 +195,24 @@ public class EZSetupController implements Initializable {
         }
     }
 
+    /**
+     * Function getSetup()
+     * <p>
+     *     Returns setup
+     * </p>
+     * @return setup
+     */
     public static EZJob getSetup() {
         return setup;
     }
 
+    /**
+     * Function getData()
+     * <p>
+     *     Returns the file path for the data file
+     * </p>
+     * @return data
+     */
     public static String getData() {
         return data;
     }

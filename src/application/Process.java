@@ -106,6 +106,14 @@ public class Process {
         }
     }
 
+    /**
+     * Constructor with arguments
+     * <p>
+     *     Allows for the setup and execution of an EZJob
+     * </p>
+     * @param size is the block size for the data
+     * @param job is the EZJob to use
+     */
     public Process(int size, EZJob job) {
         this.blockSize = size;
         task = job;
@@ -149,6 +157,13 @@ public class Process {
         });
     }
 
+    /**
+     * Function partition()
+     * <p>
+     *     Takes the sorted output and creates separate partitions of data for every key in the keySet
+     * </p>
+     * @param keySet is the list of keys
+     */
     private void partition(ArrayList<Object> keySet) {
         int startingIndex = 0;
         for(Object k : keySet) {

@@ -41,6 +41,14 @@ public class RegGuess {
         return sample;
     }
 
+    /**
+     * Function convertTable()
+     * <p>
+     *     Converts a table from a list of rows into a list of columns
+     * </p>
+     * @param table is the table to convert
+     * @return the converted table
+     */
     private ArrayList<ArrayList<String>> convertTable(ArrayList<ArrayList<String>> table) {
         ArrayList<ArrayList<String>> convert = new ArrayList<>();
         int numCols = table.get(0).size();
@@ -53,6 +61,16 @@ public class RegGuess {
         }
         return convert;
     }
+
+    /**
+     * Function guessRegex()
+     * <p>
+     *     Attempts to determine the regex of a String for a list of Strings
+     * </p>
+     * @param input is the list of Strings to guess
+     * @param delimiter is what they are separated by
+     * @return the resulting list of regexes
+     */
     public ArrayList<String> guessRegex(ArrayList<String> input, String delimiter) {
         ArrayList<String> sample = sample(input);
         ArrayList<ArrayList<String>> table = new ArrayList<>();
