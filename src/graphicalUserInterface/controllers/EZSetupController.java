@@ -119,14 +119,14 @@ public class EZSetupController implements Initializable {
             }
         }
         if(!keyField.getText().isEmpty()) {
-            keyIndex = Integer.parseInt(keyField.getText());
+            keyIndex = Integer.parseInt(keyField.getText())-1;
         }
         if(!valueField.getText().isEmpty()) {
             values = new ArrayList<>();
             String s = valueField.getText();
             ArrayList<String> row = new ArrayList<>(Arrays.asList(s.split(",")));
             for(String tmp : row) {
-                values.add(Integer.parseInt(tmp));
+                values.add(Integer.parseInt(tmp)-1);
             }
         }
         /*

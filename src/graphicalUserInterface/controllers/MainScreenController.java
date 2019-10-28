@@ -90,7 +90,7 @@ public class MainScreenController implements Initializable {
             jobParameters.add(SetupWindowController.getClassName());
             jobParameters.add(SetupWindowController.getData());
             jobParameters.add(SetupWindowController.getOutput());
-            System.out.println("[SYSTEM] Job parameters setup up");
+            System.out.println("[SYSTEM] Job parameters setup");
         }
     }
 
@@ -190,6 +190,7 @@ public class MainScreenController implements Initializable {
         setupStage.showAndWait();
         if(EZSetupController.getSetup() != null) {
             setup = true;
+            System.out.print("[SYSTEM] Job Parameters Setup");
         }
     }
 
