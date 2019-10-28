@@ -12,6 +12,7 @@ import application.nodes.ReduceNode;
 import application.nodes.Node;
 import fileHandler.FileHandler;
 import fileHandler.JarLoader;
+import mapReduce.EZJob;
 import mapReduce.Job;
 import mapReduce.Tuple;
 import java.util.ArrayList;
@@ -94,6 +95,30 @@ public class Process {
         this.jobName = jobName;
         this.jarName = jarName;
         this.fileHandler = new FileHandler();
+        /* SETUP JOB */
+        try {
+            JarLoader jarLoader = new JarLoader();
+            task = (Job) jarLoader.createObject(jarName, jobName);
+            Node.setup(task);
+        }
+        catch(Exception e) {
+            System.err.println("[ERROR] Failed to load job");
+        }
+    }
+
+    /**
+     * Constructor with arguments
+     * <p>
+     *     Allows for the setup and execution of an EZJob
+     * </p>
+     * @param size is the block size for the data
+     * @param job is the EZJob to use
+     */
+    public Process(int size, EZJob job) {
+        this.blockSize = size;
+        task = job;
+        this.fileHandler = new FileHandler();
+        Node.setup(task);
     }
 
     /**
@@ -132,6 +157,13 @@ public class Process {
         });
     }
 
+    /**
+     * Function partition()
+     * <p>
+     *     Takes the sorted output and creates separate partitions of data for every key in the keySet
+     * </p>
+     * @param keySet is the list of keys
+     */
     private void partition(ArrayList<Object> keySet) {
         int startingIndex = 0;
         for(Object k : keySet) {
@@ -207,15 +239,6 @@ public class Process {
      */
     public void start(String inputPath, String outputPath) {
         long startTime = System.nanoTime();
-        /* SETUP JOB */
-        try {
-            JarLoader jarLoader = new JarLoader();
-            task = (Job) jarLoader.createObject(jarName, jobName);
-            Node.setup(task);
-        }
-        catch(Exception e) {
-            System.err.println("[ERROR] Failed to load job");
-        }
 
         /* READ IN */
         ArrayList<String> input = readData(inputPath);

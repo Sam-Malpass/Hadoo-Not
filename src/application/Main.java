@@ -57,8 +57,7 @@ public class Main extends Application{
     public void start(Stage stage) throws Exception {
         this.mainStage = stage;
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(getClass().getResource("../graphicalUserInterface/FXML/MainScreen.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../graphicalUserInterface/FXML/MainScreen.fxml"));
             mainScene = new Scene(root, windowWidth, windowHeight);
         }
         catch (Exception e) {

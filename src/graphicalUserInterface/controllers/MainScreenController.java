@@ -7,7 +7,7 @@
 package graphicalUserInterface.controllers;
 
 import application.Process;
-import javafx.application.Platform;
+import graphicalUserInterface.Console;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,8 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,7 +42,7 @@ public class MainScreenController implements Initializable {
     /**
      * jobParameters holds a list of parameter Strings
      */
-    private static ArrayList<String> jobParameters;
+    private static ArrayList<String> jobParameters = new ArrayList<>();
 
     /**
      * Function initialize()
@@ -90,7 +88,7 @@ public class MainScreenController implements Initializable {
             jobParameters.add(SetupWindowController.getClassName());
             jobParameters.add(SetupWindowController.getData());
             jobParameters.add(SetupWindowController.getOutput());
-            System.out.println("[SYSTEM] Job parameters setup up");
+            System.out.println("[SYSTEM] Job parameters setup");
         }
     }
 
@@ -102,12 +100,25 @@ public class MainScreenController implements Initializable {
      */
     @FXML
     private void run() {
-        if(setup) {
+        if(setup && jobParameters.size() > 0) {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     Process p = new Process(10, jobParameters.get(0), jobParameters.get(1).replace(".class", ""));
                     p.start(jobParameters.get(2), jobParameters.get(3));
+                    jobParameters = new ArrayList<>();
+                }
+            });
+            System.out.println("[SYSTEM] Beginning Job...");
+            thread.start();
+        }
+        else if(setup && jobParameters.size() == 0) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Process p = new Process(10, EZSetupController.getSetup());
+                    String filePath = EZSetupController.getData();
+                    p.start(filePath, "TEST.txt");
                 }
             });
             System.out.println("[SYSTEM] Beginning Job...");
@@ -160,20 +171,30 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    public class Console extends OutputStream {
-        private TextArea console;
-
-        public Console(TextArea console) {
-            this.console = console;
+    /**
+     * Function ezSetup()
+     * <p>
+     *     Opens the EZSetup window
+     * </p>
+     */
+    @FXML
+    private void ezSetup() {
+        Scene tmp = null;
+        Stage setupStage = new Stage();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("../FXML/EZSetup.fxml"));
+            tmp = new Scene(root, 640, 360);
         }
-
-        public void appendText(String valueOf) {
-            Platform.runLater(() -> console.appendText(valueOf));
+        catch(Exception e) {
+            System.err.println("[ERROR] Issue opening EZSetup.fxml");
         }
-
-        public void write(int b) throws IOException {
-            appendText(String.valueOf((char)b));
+        setupStage.setScene(tmp);
+        setupStage.setResizable(false);
+        setupStage.setTitle("Setup Job...");
+        setupStage.showAndWait();
+        if(EZSetupController.getSetup() != null) {
+            setup = true;
+            System.out.print("[SYSTEM] Job Parameters Setup");
         }
     }
-
 }

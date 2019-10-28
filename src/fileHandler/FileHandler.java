@@ -85,4 +85,16 @@ public class FileHandler {
     public ArrayList<String> listClasses(String jarName) {
         return this.jarLoader.getClassNames(jarName);
     }
+
+    /**
+     * Function readHead()
+     * <p>
+     *     Reads and returns the top 20 lines of a data file
+     * </p>
+     * @param filePath is the file path of the data
+     * @return the top 20 data entries
+     */
+    public ArrayList<String> readHead(String filePath) {
+        return input.readHead(filePath);
+    }
 }

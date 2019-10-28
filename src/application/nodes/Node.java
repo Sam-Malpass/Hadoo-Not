@@ -8,8 +8,6 @@ package application.nodes;
 
 import mapReduce.Job;
 
-import java.util.ArrayList;
-
 public abstract class Node implements Runnable {
 
     /**

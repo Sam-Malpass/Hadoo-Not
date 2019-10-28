@@ -7,7 +7,6 @@
 package application.nodes;
 
 import mapReduce.Tuple;
-
 import java.util.ArrayList;
 
 public class CombinerNode extends Node {
