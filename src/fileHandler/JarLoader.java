@@ -70,7 +70,7 @@ public class JarLoader {
         try {
             URL jarPath = jarFile.toURI().toURL();
             String jarURL = "jar:"+jarPath+"!/";
-            URL urls[] = {new URL(jarURL)};
+            URL[] urls = {new URL(jarURL)};
             URLClassLoader child = new URLClassLoader(urls);
             Class load = Class.forName(className, true, child);
             instance = load.newInstance();
