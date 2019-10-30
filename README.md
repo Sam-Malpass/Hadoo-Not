@@ -18,9 +18,14 @@ Like Hadoop, but not
   
 # Introduction
 
-  The Hadoo-Not application demonstrates MapReduce concepts to the user, allowing users to write their own MapReduce-style jobs that will run in the application. The application is written in Java and utilizes the JavaFX [^[1]] libraries for the interface. It was written as coursework for a MSc module and can be used to allow people to experience MapReduce and understand its concepts without necessarily having access to Hadoop.
+  The Hadoo-Not application demonstrates MapReduce concepts to the user, allowing users to write their own MapReduce-style jobs that will run in the application. The application is written in Java and utilizes the JavaFX [^1] libraries for the interface. It was written as coursework for a MSc module and can be used to allow people to experience MapReduce and understand its concepts without necessarily having access to Hadoop.
 
 # What is Hadoop?
+
+## "
+The Apache Hadoop software library is a framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models. It is designed to scale up from single servers to thousands of machines, each offering local computation and storage. Rather than rely on hardware to deliver high-availability, the library itself is designed to detect and handle failures at the application layer, so delivering a highly-available service on top of a cluster of computers, each of which may be prone to failures.
+## "
+### - Apache Hadoop
 
 # What is Hadoo-Not?
 
