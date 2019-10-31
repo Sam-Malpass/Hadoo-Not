@@ -33,7 +33,7 @@ Like Hadoop, but not
 
   Hadoo-Not is very similar to Hadoop in terms of job structure and execution. The general flow of both Hadoop and Hadoo-Not is:
     
-  ##### Data input -> Map -> Shuffle/Sort/Partition -> Combine -> Reduce -> Output
+  ### Data input -> Map -> Shuffle/Sort/Partition -> Combine -> Reduce -> Output
   
   However there are some subtle differences between the two. Hadoo-Not allows users to preprocess the data as a separate task before the data is fed into the mappers. This is useful for users to get used to the paradigm without the application throwing lots of errors. Despite this, it is still possible to perform you preprocessing in the "map" function of Hadoo-Not if the user so desires it.
   
