@@ -25,3 +25,7 @@ hs_err_pid*
 Hadoo-Not.iml
 
 .idea/
+
+Data/Top30_airports_LatLong.csv
+
+Output/feck.txt
