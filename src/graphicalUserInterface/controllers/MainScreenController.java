@@ -105,7 +105,8 @@ public class MainScreenController implements Initializable {
                 @Override
                 public void run() {
                     Process p = new Process(jobParameters.get(0), jobParameters.get(1).replace(".class", ""));
-                    p.start(jobParameters.get(2), jobParameters.get(3));
+                    p.setup(jobParameters.get(2), jobParameters.get(3));
+                    p.start(0);
                     jobParameters = new ArrayList<>();
                 }
             });
@@ -118,7 +119,8 @@ public class MainScreenController implements Initializable {
                 public void run() {
                     Process p = new Process(EZSetupController.getSetup());
                     String filePath = EZSetupController.getData();
-                    p.start(filePath, "TEST.txt");
+                    p.setup(filePath, "TEST.txt");
+                    p.start(0);
                 }
             });
             System.out.println("[SYSTEM] Beginning Job...");

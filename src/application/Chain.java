@@ -16,6 +16,16 @@ public class Chain {
     ArrayList<Process> jobChain;
 
     /**
+     * inputPath holds the location of the input data
+     */
+    String inputPath;
+
+    /**
+     * outputPath holds the location of the output data
+     */
+    String outputPath;
+
+    /**
      * Constructor with arguments
      * <p>
      *
@@ -27,6 +37,22 @@ public class Chain {
         for(String s : jobNames) {
             Process p = new Process(jarPath, s);
             jobChain.add(p);
+        }
+    }
+
+    public void execute() {
+        for(int i = 0; i < jobChain.size(); i++) {
+            if(i == 0) {
+                jobChain.get(i).setup(inputPath, outputPath);
+            }
+            else if(i == jobChain.size() - 1) {
+                jobChain.get(i).setup(inputPath, outputPath);
+                jobChain.get(i).setInput((ArrayList) jobChain.get(i-1).getOutput());
+            }
+            else {
+                jobChain.get(i).setInput((ArrayList) jobChain.get(i-1).getOutput());
+            }
+            jobChain.get(i).start(i+1);
         }
     }
 }

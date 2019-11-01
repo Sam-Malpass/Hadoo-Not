@@ -81,6 +81,12 @@ public class Process {
      */
     private static Job task;
 
+    private String inputPath;
+
+    private String outputPath;
+
+    private ArrayList<Object> input;
+
     /**
      * Constructor with arguments
      * <p>
@@ -204,7 +210,7 @@ public class Process {
      * @param filePath is the file to read
      * @return the lines of the file as an ArrayList
      */
-    private ArrayList<String> readData(String filePath) {
+    private ArrayList<Object> readData(String filePath) {
         return fileHandler.read(filePath);
     }
 
@@ -220,6 +226,11 @@ public class Process {
         fileHandler.write(filePath, output);
     }
 
+    public void setup(String inputPath, String outputPath) {
+        this.inputPath = inputPath;
+        this.outputPath = outputPath;
+    }
+
     /**
      * Function start()
      * <p>
@@ -232,26 +243,35 @@ public class Process {
      *     6. Run the reduce stage on a number of nodes
      *     7. Output the results to a file
      * </p>
-     * @param inputPath is the file to read from
-     * @param outputPath is the file to output to
+     * @param chain determines the position in the chain, 0 for singular job
      */
-    public void start(String inputPath, String outputPath) {
+    public void start(int chain) {
         long startTime = System.nanoTime();
 
+
         /* READ IN */
-        ArrayList<String> input = readData(inputPath);
+        if(chain == 0) {
+            input = readData(inputPath);
+        }
+
         //Determine block size
         int cores = Runtime.getRuntime().availableProcessors();
         int numThreads = cores * 12;
         this.blockSize = input.size()/numThreads;
 
         /* PREPROCESS */
-        System.out.println("[PREPROCESSOR] Beginning preprocessing...");
-        ArrayList<Object> data = task.preprocess(input);
-        System.out.println("[PREPROCESSOR] Preprocessing complete!\n");
+        ArrayList<ArrayList<Object>> dataChunks = new ArrayList<>();
+        if(chain <= 1) {
+            System.out.println("[PREPROCESSOR] Beginning preprocessing...");
+            ArrayList<Object> data = task.preprocess(input);
+            System.out.println("[PREPROCESSOR] Preprocessing complete!\n");
+            /* SPLIT */
+            dataChunks = split(data);
+        }
+        else{
+            dataChunks = split(input);
+        }
 
-        /* SPLIT */
-        ArrayList<ArrayList<Object>> dataChunks = split(data);
 
         /* MAP */
         System.out.println("[MAPPER] Beginning mapping...");
@@ -347,11 +367,24 @@ public class Process {
         }
         System.out.println("[REDUCER] Reducing complete!\n");
 
-        /* OUTPUT */
-        System.out.println("[SYSTEM] Writing output...");
-        writeData(outputPath, task.format(finalOutput));
-        long endTime = System.nanoTime();
-        System.out.println("[SYSTEM] Job execution completed in " + (endTime-startTime)/1000000 + "ms");
+        if((chain == 0 || chain > 1) && !outputPath.isEmpty()) {
+            /* OUTPUT */
+            System.out.println("[SYSTEM] Writing output...");
+            writeData(outputPath, task.format(finalOutput));
+        }
+
+        if(chain == 0) {
+            long endTime = System.nanoTime();
+            System.out.println("[SYSTEM] Job execution completed in " + (endTime - startTime) / 1000000 + "ms");
+        }
+    }
+
+    public void setInput(ArrayList<Object> input) {
+        this.input = input;
+    }
+
+    public Object getOutput() {
+        return finalOutput;
     }
 }
 

@@ -45,7 +45,7 @@ public class FileHandler {
      * @param fileName is the name of the file to read
      * @return an ArrayList of String which contain the file's contents
      */
-    public ArrayList<String> read(String fileName) {
+    public ArrayList<Object> read(String fileName) {
         return this.input.readFile(fileName);
     }
 

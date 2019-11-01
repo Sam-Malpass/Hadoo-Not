@@ -45,11 +45,12 @@ public class EZJob extends Job {
     }
 
     @Override
-    public ArrayList<Object> preprocess(ArrayList<String> input) {
+    public ArrayList<Object> preprocess(ArrayList<Object> input) {
         ArrayList<Object> dataEntries = new ArrayList<>();
         RegGuess brute = new RegGuess();
         ArrayList<String> regexList =  brute.guessRegex(input, ",");
-        for(String s : input) {
+        for(Object x : input) {
+            String s = (String) x;
             ArrayList<Object> data = new ArrayList<>();
             String[] row = s.split(",");
             ArrayList<String> rowList = new ArrayList(Arrays.asList(row));
@@ -63,10 +64,10 @@ public class EZJob extends Job {
             if(!bad) {
                 data.addAll(rowList);
                 for(Object d : dataEntries) {
-                    ArrayList<Object> x = (ArrayList) d;
-                    if(data.get(keyIndex).equals(x.get(keyIndex))) {
+                    ArrayList<Object> tmp = (ArrayList) d;
+                    if(data.get(keyIndex).equals(tmp.get(keyIndex))) {
                         for(Integer i : valueIndices) {
-                            if(data.get(i).equals(x.get(i))) {
+                            if(data.get(i).equals(tmp.get(i))) {
                                 bad = true;
                             }
                         }

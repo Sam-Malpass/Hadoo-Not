@@ -28,7 +28,7 @@ public class RegGuess {
      * @param input is the data being read in
      * @return the sample of the data
      */
-    private ArrayList<String> sample(ArrayList<String> input) {
+    private ArrayList<String> sample(ArrayList<Object> input) {
         int sampleSize = ( input.size() / 100 ) * 10;
         if(sampleSize > 500) {
             sampleSize = 500;
@@ -36,7 +36,7 @@ public class RegGuess {
         ArrayList<String> sample = new ArrayList<>();
         Random random = new Random();
         for(int i = 0; i < sampleSize; i++) {
-            sample.add(input.get(random.nextInt(input.size())));
+            sample.add((String) input.get(random.nextInt(input.size())));
         }
         return sample;
     }
@@ -71,7 +71,7 @@ public class RegGuess {
      * @param delimiter is what they are separated by
      * @return the resulting list of regexes
      */
-    public ArrayList<String> guessRegex(ArrayList<String> input, String delimiter) {
+    public ArrayList<String> guessRegex(ArrayList<Object> input, String delimiter) {
         ArrayList<String> sample = sample(input);
         ArrayList<ArrayList<String>> table = new ArrayList<>();
         for(String entry : sample) {
