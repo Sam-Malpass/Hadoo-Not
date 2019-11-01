@@ -1,7 +1,7 @@
 /**
  * Job
  * @author Sam Malpass
- * @version 0.0.6
+ * @version 0.0.8
  * @since 0.0.0
  */
 package mapReduce;

@@ -1,7 +1,7 @@
 /**
  * RegGuess
  * @author Sam Malpass
- * @version 0.0.7
+ * @version 0.0.8
  * @since 0.0.7
  */
 package mapReduce;
