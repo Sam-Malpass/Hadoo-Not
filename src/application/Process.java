@@ -86,12 +86,12 @@ public class Process {
      * <p>
      *     Sets up the object using the passed arguments
      * </p>
-     * @param size is the number to use for blockSize
      * @param jarName is the location of the JAR file
      * @param jobName is the name of the class file to load
      */
-    public Process(int size, String jarName, String jobName) {
-        this.blockSize = size;
+    public Process(String jarName, String jobName) {
+
+        //this.blockSize = ;
         this.jobName = jobName;
         this.jarName = jarName;
         this.fileHandler = new FileHandler();
@@ -111,11 +111,9 @@ public class Process {
      * <p>
      *     Allows for the setup and execution of an EZJob
      * </p>
-     * @param size is the block size for the data
      * @param job is the EZJob to use
      */
-    public Process(int size, EZJob job) {
-        this.blockSize = size;
+    public Process(EZJob job) {
         task = job;
         this.fileHandler = new FileHandler();
         Node.setup(task);
@@ -242,6 +240,10 @@ public class Process {
 
         /* READ IN */
         ArrayList<String> input = readData(inputPath);
+        //Determine block size
+        int cores = Runtime.getRuntime().availableProcessors();
+        int numThreads = cores * 12;
+        this.blockSize = input.size()/numThreads;
 
         /* PREPROCESS */
         System.out.println("[PREPROCESSOR] Beginning preprocessing...");

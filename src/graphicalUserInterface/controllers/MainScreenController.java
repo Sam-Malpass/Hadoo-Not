@@ -101,22 +101,22 @@ public class MainScreenController implements Initializable {
     @FXML
     private void run() {
         if(setup && jobParameters.size() > 0) {
-            Thread thread = new Thread(new Runnable() {
+            Thread processThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Process p = new Process(10, jobParameters.get(0), jobParameters.get(1).replace(".class", ""));
+                    Process p = new Process(jobParameters.get(0), jobParameters.get(1).replace(".class", ""));
                     p.start(jobParameters.get(2), jobParameters.get(3));
                     jobParameters = new ArrayList<>();
                 }
             });
             System.out.println("[SYSTEM] Beginning Job...");
-            thread.start();
+            processThread.start();
         }
         else if(setup && jobParameters.size() == 0) {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Process p = new Process(10, EZSetupController.getSetup());
+                    Process p = new Process(EZSetupController.getSetup());
                     String filePath = EZSetupController.getData();
                     p.start(filePath, "TEST.txt");
                 }
