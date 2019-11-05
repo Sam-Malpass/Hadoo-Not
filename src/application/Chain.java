@@ -13,17 +13,17 @@ public class Chain {
     /**
      * jobChain holds a list of all Jobs to be performed in the process
      */
-    ArrayList<Process> jobChain;
+    private ArrayList<Process> jobChain;
 
     /**
      * inputPath holds the location of the input data
      */
-    String inputPath;
+    private String inputPath;
 
     /**
      * outputPath holds the location of the output data
      */
-    String outputPath;
+    private String outputPath;
 
     /**
      * Constructor with arguments
@@ -34,10 +34,16 @@ public class Chain {
      * @param jobNames the list of jobs to be performed in order
      */
     public Chain(String jarPath, ArrayList<String> jobNames) {
+        jobChain = new ArrayList<>();
         for(String s : jobNames) {
             Process p = new Process(jarPath, s);
             jobChain.add(p);
         }
+    }
+
+    public void setupChain(String in, String out) {
+        this.inputPath = in;
+        this.outputPath = out;
     }
 
     public void execute() {
@@ -53,6 +59,7 @@ public class Chain {
                 jobChain.get(i).setInput((ArrayList) jobChain.get(i-1).getOutput());
             }
             jobChain.get(i).start(i+1);
+            System.out.println("Job " + i+1 + " Complete");
         }
     }
 }

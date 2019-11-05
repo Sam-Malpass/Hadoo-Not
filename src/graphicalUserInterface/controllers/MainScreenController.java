@@ -6,6 +6,7 @@
  */
 package graphicalUserInterface.controllers;
 
+import application.Chain;
 import application.Process;
 import graphicalUserInterface.Console;
 import javafx.fxml.FXML;
@@ -154,7 +155,12 @@ public class MainScreenController implements Initializable {
      */
     @FXML
     private void help() {
-
+        ArrayList<String> jobNames = new ArrayList<>();
+        jobNames.add("testChain1");
+        jobNames.add("testChain2");
+        Chain chain = new Chain("C:/Users/Sam/IdeaProjects/Cloud-Computing-Tasks/out/artifacts/Cloud_Computing_Tasks_jar/Cloud-Computing-Tasks.jar", jobNames);
+        chain.setupChain("C:/Users/Sam/Desktop/CS3AC18_Coursework/Data/AComp_Passenger_data(2).csv", "TESTCHAIN.txt");
+        chain.execute();
     }
 
     /**
