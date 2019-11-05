@@ -41,11 +41,25 @@ public class Chain {
         }
     }
 
+    /**
+     * Function setupChain()
+     * <p>
+     *     in is to be used as the inputPath, out is to be used as the outputPath
+     * </p>
+     * @param in input
+     * @param out output
+     */
     public void setupChain(String in, String out) {
         this.inputPath = in;
         this.outputPath = out;
     }
 
+    /**
+     * Function execute()
+     * <p>
+     *     Runs all jobs in sequence, using the output of the previous job as the input to the next
+     * </p>
+     */
     public void execute() {
         for(int i = 0; i < jobChain.size(); i++) {
             if(i == 0) {
