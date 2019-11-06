@@ -1,7 +1,7 @@
 /**
  * Console
  * @author James_D (https://stackoverflow.com/questions/33494052/javafx-redirect-console-output-to-textarea-that-is-created-in-scenebuilder?rq=1)
- * @version 0.0.8
+ * @version 0.0.9
  * @since 0.0.7
  */
 package graphicalUserInterface;
