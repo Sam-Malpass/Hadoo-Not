@@ -1,7 +1,7 @@
 /**
  * Process
  * @author Sam Malpass
- * @version 0.0.6
+ * @version 0.0.8
  * @since 0.0.1
  */
 package application;
@@ -79,7 +79,22 @@ public class Process {
     /**
      * task holds the Job to be used
      */
-    private static Job task;
+    private Job task;
+
+    /**
+     * inputPath holds the file path of a data file
+     */
+    private String inputPath;
+
+    /**
+     * outputPath holds the file path to write to
+     */
+    private String outputPath;
+
+    /**
+     * input holds a list of objects to operate on
+     */
+    private ArrayList<Object> input;
 
     /**
      * Constructor with arguments
@@ -99,7 +114,6 @@ public class Process {
         try {
             JarLoader jarLoader = new JarLoader();
             task = (Job) jarLoader.createObject(jarName, jobName);
-            Node.setup(task);
         }
         catch(Exception e) {
             System.err.println("[ERROR] Failed to load job");
@@ -145,7 +159,7 @@ public class Process {
     private void shuffleSort() {
         for(Node n : mapperNodes) {
              ArrayList<Tuple> mapperOutput = (ArrayList<Tuple>) n.getOutput();
-            shuffledOutput.addAll(mapperOutput);
+             shuffledOutput.addAll(mapperOutput);
         }
         Collections.sort(shuffledOutput, new Comparator<Tuple>() {
             @Override
@@ -204,7 +218,7 @@ public class Process {
      * @param filePath is the file to read
      * @return the lines of the file as an ArrayList
      */
-    private ArrayList<String> readData(String filePath) {
+    private ArrayList<Object> readData(String filePath) {
         return fileHandler.read(filePath);
     }
 
@@ -221,6 +235,19 @@ public class Process {
     }
 
     /**
+     * Function setup()
+     * <p>
+     *     Sets the input/output paths for the process
+     * </p>
+     * @param inputPath is the file path of the input data
+     * @param outputPath is the file path of the output data
+     */
+    public void setup(String inputPath, String outputPath) {
+        this.inputPath = inputPath;
+        this.outputPath = outputPath;
+    }
+
+    /**
      * Function start()
      * <p>
      *     Runs the all the stages of the job
@@ -232,26 +259,32 @@ public class Process {
      *     6. Run the reduce stage on a number of nodes
      *     7. Output the results to a file
      * </p>
-     * @param inputPath is the file to read from
-     * @param outputPath is the file to output to
+     * @param chain determines the position in the chain, 0 for singular job
      */
-    public void start(String inputPath, String outputPath) {
-        long startTime = System.nanoTime();
-
+    public void start(int chain) {
+        Node.setup(task);
         /* READ IN */
-        ArrayList<String> input = readData(inputPath);
+        if(chain <= 1) {
+            input = readData(inputPath);
+        }
         //Determine block size
         int cores = Runtime.getRuntime().availableProcessors();
-        int numThreads = cores * 12;
+        int numThreads = cores * 2;
         this.blockSize = input.size()/numThreads;
 
         /* PREPROCESS */
-        System.out.println("[PREPROCESSOR] Beginning preprocessing...");
-        ArrayList<Object> data = task.preprocess(input);
-        System.out.println("[PREPROCESSOR] Preprocessing complete!\n");
+        ArrayList<ArrayList<Object>> dataChunks = new ArrayList<>();
+        if(chain <= 1) {
+            System.out.println("[PREPROCESSOR] Beginning preprocessing...");
+            ArrayList<Object> data = task.preprocess(input);
+            System.out.println("[PREPROCESSOR] Preprocessing complete!\n");
+            /* SPLIT */
+            dataChunks = split(data);
+        }
+        else{
+            dataChunks = split(input);
+        }
 
-        /* SPLIT */
-        ArrayList<ArrayList<Object>> dataChunks = split(data);
 
         /* MAP */
         System.out.println("[MAPPER] Beginning mapping...");
@@ -350,8 +383,28 @@ public class Process {
         /* OUTPUT */
         System.out.println("[SYSTEM] Writing output...");
         writeData(outputPath, task.format(finalOutput));
-        long endTime = System.nanoTime();
-        System.out.println("[SYSTEM] Job execution completed in " + (endTime-startTime)/1000000 + "ms");
+    }
+
+    /**
+     * Function setInput()
+     * <p>
+     *     Set the input to the passed value
+     * </p>
+     * @param input is the data to use
+     */
+    public void setInput(ArrayList<Object> input) {
+        this.input = input;
+    }
+
+    /**
+     * Function getOutput()
+     * <p>
+     *     Return the output of the process
+     * </p>
+     * @return output
+     */
+    public Object getOutput() {
+        return finalOutput;
     }
 }
 

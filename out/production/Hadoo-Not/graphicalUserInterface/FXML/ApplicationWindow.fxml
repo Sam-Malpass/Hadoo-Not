@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicalUserInterface.controllers.ApplicationWindowController">
+   <left>
+      <VBox prefHeight="593.0" prefWidth="1282.0" BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar fx:id="menuBar">
+              <menus>
+                <Menu mnemonicParsing="false" text="Setup">
+                  <items>
+                        <MenuItem fx:id="setupJob" mnemonicParsing="false" onAction="#setupJob" text="Setup Job..." />
+                        <MenuItem fx:id="setupChain" mnemonicParsing="false" text="Setup Chain..." onAction="#setupChain"/>
+                        <MenuItem fx:id="setupEZ" mnemonicParsing="false" onAction="#ezSetup" text="Setup EZJob..." />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem fx:id="cancelSetup" mnemonicParsing="false" text="Cancel" />
+                  </items>
+                </Menu>
+                  <Menu fx:id="run" mnemonicParsing="false" text="Run">
+                     <items>
+                        <MenuItem fx:id="runMapReduce" mnemonicParsing="false" onAction="#run" text="Run MapReduce" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="cancelRun" mnemonicParsing="false" text="Cancel" />
+                     </items>
+                  </Menu>
+                <Menu fx:id="help" mnemonicParsing="false" text="Help">
+                  <items>
+                        <MenuItem fx:id="openOutput" mnemonicParsing="false" text="Open Output Folder..." onAction="#openOutput"/>
+                        <MenuItem fx:id="documentation" mnemonicParsing="false" text="Documentation..." />
+                    <MenuItem fx:id="about" mnemonicParsing="false" onAction="#about" text="About..." />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="cancelHelp" mnemonicParsing="false" text="Cancel" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </children>
+      </VBox>
+   </left>
+   <bottom>
+      <TextArea fx:id="console" prefHeight="203.0" prefWidth="1278.0" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+         </BorderPane.margin>
+      </TextArea>
+   </bottom>
+   <center>
+      <Canvas fx:id="canvas" height="415.0" translateX="-640.0" translateY="12.0" width="1262.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

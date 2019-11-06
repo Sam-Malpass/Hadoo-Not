@@ -1,7 +1,7 @@
 /**
  * Main
  * @author Sam Malpass
- * @version 0.0.6
+ * @version 0.0.8
  * @since 0.0.0
  */
 package application;
@@ -57,7 +57,7 @@ public class Main extends Application{
     public void start(Stage stage) throws Exception {
         this.mainStage = stage;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("../graphicalUserInterface/FXML/MainScreen.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../graphicalUserInterface/FXML/ApplicationWindow.fxml"));
             mainScene = new Scene(root, windowWidth, windowHeight);
         }
         catch (Exception e) {

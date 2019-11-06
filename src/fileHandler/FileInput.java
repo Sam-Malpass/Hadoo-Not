@@ -1,7 +1,7 @@
 /**
  * FileInput
  * @author Sam Malpass
- * @version 0.0.6
+ * @version 0.0.8
  * @since 0.0.0
  */
 package fileHandler;
@@ -29,8 +29,8 @@ public class FileInput {
      * @param filePath is the file to read from
      * @return the list of lines
      */
-    public ArrayList<String> readFile(String filePath) {
-        ArrayList<String> lines = new ArrayList<>();
+    public ArrayList<Object> readFile(String filePath) {
+        ArrayList<Object> lines = new ArrayList<>();
         String line;
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));

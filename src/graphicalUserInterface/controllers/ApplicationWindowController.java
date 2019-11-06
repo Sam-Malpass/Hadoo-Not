@@ -1,11 +1,12 @@
 /**
  * MainScreenController
  * @author Sam Malpass
- * @version 0.0.6
+ * @version 0.0.8
  * @since 0.0.3
  */
 package graphicalUserInterface.controllers;
 
+import application.Chain;
 import application.Process;
 import graphicalUserInterface.Console;
 import javafx.fxml.FXML;
@@ -21,7 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class MainScreenController implements Initializable {
+public class ApplicationWindowController implements Initializable {
 
     /**
      * console holds the TextArea for the console
@@ -37,12 +38,17 @@ public class MainScreenController implements Initializable {
     /**
      * setup says whether a job has been setup
      */
-    private static boolean setup = false;
+    private boolean setup = false;
 
     /**
      * jobParameters holds a list of parameter Strings
      */
-    private static ArrayList<String> jobParameters = new ArrayList<>();
+    private ArrayList<String> jobParameters = new ArrayList<>();
+
+    /**
+     * chain holds a Chain object that can be executed if setup correctly
+     */
+    private Chain chain = null;
 
     /**
      * Function initialize()
@@ -71,23 +77,23 @@ public class MainScreenController implements Initializable {
         Scene tmp = null;
         Stage setupStage = new Stage();
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("../FXML/SetupWindow.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../FXML/SetupJob.fxml"));
             tmp = new Scene(root, 640, 360);
         }
         catch(Exception e) {
-            System.err.println("[ERROR] Issue opening SetupWindow.fxml");
+            System.err.println("[ERROR] Issue opening SetupJob.fxml");
         }
         setupStage.setScene(tmp);
         setupStage.setResizable(false);
         setupStage.setTitle("Setup Job...");
         setupStage.showAndWait();
-        setup = SetupWindowController.getSetup();
+        setup = SetupJobController.getSetup();
         if(setup) {
             jobParameters = new ArrayList<>();
-            jobParameters.add(SetupWindowController.getJar());
-            jobParameters.add(SetupWindowController.getClassName());
-            jobParameters.add(SetupWindowController.getData());
-            jobParameters.add(SetupWindowController.getOutput());
+            jobParameters.add(SetupJobController.getJar());
+            jobParameters.add(SetupJobController.getClassName());
+            jobParameters.add(SetupJobController.getData());
+            jobParameters.add(SetupJobController.getOutput());
             System.out.println("[SYSTEM] Job parameters setup");
         }
     }
@@ -104,21 +110,42 @@ public class MainScreenController implements Initializable {
             Thread processThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    long startTime = System.nanoTime();
                     Process p = new Process(jobParameters.get(0), jobParameters.get(1).replace(".class", ""));
-                    p.start(jobParameters.get(2), jobParameters.get(3));
+                    p.setup(jobParameters.get(2), jobParameters.get(3));
+                    p.start(0);
                     jobParameters = new ArrayList<>();
+                    long endTime = System.nanoTime();
+                    System.out.println("[SYSTEM] Job execution completed in " + (endTime - startTime) / 1000000 + "ms");
                 }
             });
             System.out.println("[SYSTEM] Beginning Job...");
             processThread.start();
         }
+        else if(setup && !(chain == null)) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    long startTime = System.nanoTime();
+                    chain.execute();
+                    long endTime = System.nanoTime();
+                    System.out.println("[SYSTEM] Job execution completed in " + (endTime - startTime) / 1000000 + "ms");
+                }
+            });
+            System.out.println("[SYSTEM] Beginning Chain...");
+            thread.start();
+        }
         else if(setup && jobParameters.size() == 0) {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    long startTime = System.nanoTime();
                     Process p = new Process(EZSetupController.getSetup());
                     String filePath = EZSetupController.getData();
-                    p.start(filePath, "TEST.txt");
+                    p.setup(filePath, "TEST.txt");
+                    p.start(0);
+                    long endTime = System.nanoTime();
+                    System.out.println("[SYSTEM] Job execution completed in " + (endTime - startTime) / 1000000 + "ms");
                 }
             });
             System.out.println("[SYSTEM] Beginning Job...");
@@ -152,7 +179,12 @@ public class MainScreenController implements Initializable {
      */
     @FXML
     private void help() {
-
+        ArrayList<String> jobNames = new ArrayList<>();
+        jobNames.add("testChain1");
+        jobNames.add("testChain2");
+        Chain chain = new Chain("C:/Users/Sam/IdeaProjects/Cloud-Computing-Tasks/out/artifacts/Cloud_Computing_Tasks_jar/Cloud-Computing-Tasks.jar", jobNames);
+        chain.setupChain("C:/Users/Sam/Desktop/CS3AC18_Coursework/Data/AComp_Passenger_data(2).csv", "TESTCHAIN.txt");
+        chain.execute();
     }
 
     /**
@@ -195,6 +227,35 @@ public class MainScreenController implements Initializable {
         if(EZSetupController.getSetup() != null) {
             setup = true;
             System.out.print("[SYSTEM] Job Parameters Setup");
+        }
+    }
+
+    /**
+     * Function setupChain()
+     * <p>
+     *     Opens the SetupChain window
+     * </p>
+     */
+    @FXML
+    private void setupChain() {
+        Scene tmp = null;
+        Stage setupStage = new Stage();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("../FXML/SetupChain.fxml"));
+            tmp = new Scene(root, 640, 360);
+        }
+        catch(Exception e) {
+            System.err.println("[ERROR] Issue opening SetupChain.fxml");
+        }
+        setupStage.setScene(tmp);
+        setupStage.setResizable(false);
+        setupStage.setTitle("Setup Chain...");
+        setupStage.showAndWait();
+        if(!(SetupChainController.getJarPath() == null) && !(SetupChainController.getDataPath() == null) && !(SetupChainController.getClassNames() == null) && !(SetupChainController.getOutputName() == null)) {
+            chain = new Chain(SetupChainController.getJarPath(), SetupChainController.getClassNames());
+            chain.setupChain(SetupChainController.getDataPath(), SetupChainController.getOutputName());
+            setup = true;
+            System.out.println("[SYSTEM] Chain setup");
         }
     }
 }

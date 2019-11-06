@@ -1,7 +1,7 @@
 /**
  * SetupWindowController
  * @author Sam Malpass
- * @version 0.0.6
+ * @version 0.0.8
  * @since 0.0.3
  */
 package graphicalUserInterface.controllers;
@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SetupWindowController implements Initializable {
+public class SetupJobController implements Initializable {
 
     /**
      * jarField is the TextField for JAR path
