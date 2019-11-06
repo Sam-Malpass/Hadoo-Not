@@ -19,7 +19,7 @@
                 <Menu mnemonicParsing="false" text="Setup">
                   <items>
                         <MenuItem fx:id="setupJob" mnemonicParsing="false" onAction="#setupJob" text="Setup Job..." />
-                        <MenuItem fx:id="setupChain" mnemonicParsing="false" text="Setup Chain..." />
+                        <MenuItem fx:id="setupChain" mnemonicParsing="false" text="Setup Chain..." onAction="#setupChain"/>
                         <MenuItem fx:id="setupEZ" mnemonicParsing="false" onAction="#ezSetup" text="Setup EZJob..." />
                         <SeparatorMenuItem mnemonicParsing="false" />
                     <MenuItem fx:id="cancelSetup" mnemonicParsing="false" text="Cancel" />
@@ -34,6 +34,7 @@
                   </Menu>
                 <Menu fx:id="help" mnemonicParsing="false" text="Help">
                   <items>
+                        <MenuItem fx:id="openOutput" mnemonicParsing="false" text="Open Output Folder..." onAction="#openOutput"/>
                         <MenuItem fx:id="documentation" mnemonicParsing="false" text="Documentation..." />
                     <MenuItem fx:id="about" mnemonicParsing="false" onAction="#about" text="About..." />
                         <SeparatorMenuItem mnemonicParsing="false" />

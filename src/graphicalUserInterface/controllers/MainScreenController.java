@@ -45,6 +45,8 @@ public class MainScreenController implements Initializable {
      */
     private static ArrayList<String> jobParameters = new ArrayList<>();
 
+    private static Chain chain;
+
     /**
      * Function initialize()
      * <p>
@@ -72,23 +74,23 @@ public class MainScreenController implements Initializable {
         Scene tmp = null;
         Stage setupStage = new Stage();
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("../FXML/SetupWindow.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../FXML/SetupJob.fxml"));
             tmp = new Scene(root, 640, 360);
         }
         catch(Exception e) {
-            System.err.println("[ERROR] Issue opening SetupWindow.fxml");
+            System.err.println("[ERROR] Issue opening SetupJob.fxml");
         }
         setupStage.setScene(tmp);
         setupStage.setResizable(false);
         setupStage.setTitle("Setup Job...");
         setupStage.showAndWait();
-        setup = SetupWindowController.getSetup();
+        setup = SetupJobController.getSetup();
         if(setup) {
             jobParameters = new ArrayList<>();
-            jobParameters.add(SetupWindowController.getJar());
-            jobParameters.add(SetupWindowController.getClassName());
-            jobParameters.add(SetupWindowController.getData());
-            jobParameters.add(SetupWindowController.getOutput());
+            jobParameters.add(SetupJobController.getJar());
+            jobParameters.add(SetupJobController.getClassName());
+            jobParameters.add(SetupJobController.getData());
+            jobParameters.add(SetupJobController.getOutput());
             System.out.println("[SYSTEM] Job parameters setup");
         }
     }
@@ -204,5 +206,22 @@ public class MainScreenController implements Initializable {
             setup = true;
             System.out.print("[SYSTEM] Job Parameters Setup");
         }
+    }
+
+    @FXML
+    private void setupChain() {
+        Scene tmp = null;
+        Stage setupStage = new Stage();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("../FXML/SetupChain.fxml"));
+            tmp = new Scene(root, 640, 360);
+        }
+        catch(Exception e) {
+            System.err.println("[ERROR] Issue opening SetupChain.fxml");
+        }
+        setupStage.setScene(tmp);
+        setupStage.setResizable(false);
+        setupStage.setTitle("Setup Chain...");
+        setupStage.showAndWait();
     }
 }

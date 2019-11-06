@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SetupWindowController implements Initializable {
+public class SetupJobController implements Initializable {
 
     /**
      * jarField is the TextField for JAR path
