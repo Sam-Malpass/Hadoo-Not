@@ -262,7 +262,6 @@ public class Process {
      * @param chain determines the position in the chain, 0 for singular job
      */
     public void start(int chain) {
-        long startTime = System.nanoTime();
         Node.setup(task);
         /* READ IN */
         if(chain <= 1) {
@@ -385,11 +384,6 @@ public class Process {
             /* OUTPUT */
             System.out.println("[SYSTEM] Writing output...");
             writeData(outputPath, task.format(finalOutput));
-        }
-
-        if(chain == 0) {
-            long endTime = System.nanoTime();
-            System.out.println("[SYSTEM] Job execution completed in " + (endTime - startTime) / 1000000 + "ms");
         }
     }
 

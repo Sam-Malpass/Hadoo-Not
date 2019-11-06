@@ -45,7 +45,7 @@ public class MainScreenController implements Initializable {
      */
     private static ArrayList<String> jobParameters = new ArrayList<>();
 
-    private static Chain chain;
+    private static Chain chain = null;
 
     /**
      * Function initialize()
@@ -107,23 +107,42 @@ public class MainScreenController implements Initializable {
             Thread processThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    long startTime = System.nanoTime();
                     Process p = new Process(jobParameters.get(0), jobParameters.get(1).replace(".class", ""));
                     p.setup(jobParameters.get(2), jobParameters.get(3));
                     p.start(0);
                     jobParameters = new ArrayList<>();
+                    long endTime = System.nanoTime();
+                    System.out.println("[SYSTEM] Job execution completed in " + (endTime - startTime) / 1000000 + "ms");
                 }
             });
             System.out.println("[SYSTEM] Beginning Job...");
             processThread.start();
         }
+        else if(setup && !(chain == null)) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    long startTime = System.nanoTime();
+                    chain.execute();
+                    long endTime = System.nanoTime();
+                    System.out.println("[SYSTEM] Job execution completed in " + (endTime - startTime) / 1000000 + "ms");
+                }
+            });
+            System.out.println("[SYSTEM] Beginning Chain...");
+            thread.start();
+        }
         else if(setup && jobParameters.size() == 0) {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    long startTime = System.nanoTime();
                     Process p = new Process(EZSetupController.getSetup());
                     String filePath = EZSetupController.getData();
                     p.setup(filePath, "TEST.txt");
                     p.start(0);
+                    long endTime = System.nanoTime();
+                    System.out.println("[SYSTEM] Job execution completed in " + (endTime - startTime) / 1000000 + "ms");
                 }
             });
             System.out.println("[SYSTEM] Beginning Job...");
@@ -223,5 +242,10 @@ public class MainScreenController implements Initializable {
         setupStage.setResizable(false);
         setupStage.setTitle("Setup Chain...");
         setupStage.showAndWait();
+        if(!(SetupChainController.getJarPath() == null) && !(SetupChainController.getDataPath() == null) && !(SetupChainController.getClassNames() == null)) {
+            chain = new Chain(SetupChainController.getJarPath(), SetupChainController.getClassNames());
+            chain.setupChain(SetupChainController.getDataPath(), "TESTOut.txt");
+            setup = true;
+        }
     }
 }

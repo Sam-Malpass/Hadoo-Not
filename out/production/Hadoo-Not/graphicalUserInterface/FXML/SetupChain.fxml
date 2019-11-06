@@ -2,14 +2,14 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicalUserInterface.controllers.SetupChainController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -20,13 +20,13 @@
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                            <children>
                               <TextField fx:id="jarField" alignment="TOP_LEFT" prefWidth="300.0" promptText="Select JAR file..." />
-                              <Button fx:id="browseJAR" mnemonicParsing="false" text="Browse..." />
+                              <Button fx:id="browseJAR" mnemonicParsing="false" onAction="#browseJar" text="Browse..." />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                            <children>
                               <TextField fx:id="dataField" prefWidth="300.0" promptText="Select input file..." />
-                              <Button fx:id="browseData" mnemonicParsing="false" text="Browse..." />
+                              <Button fx:id="browseData" mnemonicParsing="false" onAction="#browseData" text="Browse..." />
                            </children>
                         </HBox>
                      </children>
@@ -36,13 +36,29 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="243.0" prefWidth="640.0">
+            <VBox prefHeight="238.0" prefWidth="640.0">
                <children>
-                  <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="400.0" />
+                  <HBox alignment="CENTER" prefHeight="198.0" prefWidth="640.0">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <children>
+                        <ListView fx:id="listView" prefHeight="227.0" prefWidth="371.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="36.0" prefWidth="640.0" spacing="10.0">
+                     <children>
+                        <ComboBox fx:id="comboBox" prefWidth="300.0" promptText="Select Job..." />
+                        <Button fx:id="addJob" mnemonicParsing="false" text="Add Job" onAction="#addJob" />
+                     </children>
+                  </HBox>
                </children>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
+            </VBox>
+            <HBox alignment="CENTER" prefHeight="42.0" prefWidth="640.0" spacing="475.0">
+               <children>
+                  <Button fx:id="cancel" mnemonicParsing="false" onAction="#cancel" prefWidth="75.0" text="Cancel" />
+                  <Button fx:id="confirm" mnemonicParsing="false" onAction="#complete" prefWidth="75.0" text="Confirm" />
+               </children>
             </HBox>
          </children>
          <opaqueInsets>
