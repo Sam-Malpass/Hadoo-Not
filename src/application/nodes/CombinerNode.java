@@ -51,7 +51,8 @@ public class CombinerNode extends Node {
             for (Tuple t : x) {
                 totalObjects.add(t.getValue());
             }
-            output.add(new Tuple(key, totalObjects));
+            Tuple tuple = new Tuple(key, totalObjects);
+            output.add(tuple);
         }
         setOutput(output);
     }
