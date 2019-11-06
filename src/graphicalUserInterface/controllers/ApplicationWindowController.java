@@ -154,8 +154,6 @@ public class ApplicationWindowController implements Initializable {
         else {
             System.err.println("[ERROR] Job not setup");
         }
-        setup = false;
-        jobParameters = new ArrayList<>();
     }
 
     /**
@@ -257,6 +255,7 @@ public class ApplicationWindowController implements Initializable {
             chain = new Chain(SetupChainController.getJarPath(), SetupChainController.getClassNames());
             chain.setupChain(SetupChainController.getDataPath(), SetupChainController.getOutputName());
             setup = true;
+            System.out.println("[SYSTEM] Chain setup");
         }
     }
 }

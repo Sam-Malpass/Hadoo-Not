@@ -69,9 +69,10 @@ public class Chain {
                 jobChain.get(i).setup(inputPath, outputPath);
                 jobChain.get(i).setInput((ArrayList) jobChain.get(i-1).getOutput());
             }
+            /*
             else {
                 jobChain.get(i).setInput((ArrayList) jobChain.get(i-1).getOutput());
-            }
+            } */
             jobChain.get(i).start(i+1);
             System.out.println("[SYSTEM] Job " + (i+1) + " Complete!\n");
         }

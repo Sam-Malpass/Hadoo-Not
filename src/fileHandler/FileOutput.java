@@ -7,6 +7,7 @@
 package fileHandler;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 
 public class FileOutput {
@@ -30,7 +31,11 @@ public class FileOutput {
     public void writeOutput(String fileName, String output) {
         BufferedWriter writer;
         try {
-            writer = new BufferedWriter(new FileWriter("Output/" + fileName));
+            File file = new File("Output/"+fileName);
+            if(!file.exists()) {
+                file.createNewFile();
+            }
+            writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile(), true));
             writer.append(output);
             writer.flush();
             writer.close();

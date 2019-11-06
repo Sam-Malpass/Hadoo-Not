@@ -159,7 +159,7 @@ public class Process {
     private void shuffleSort() {
         for(Node n : mapperNodes) {
              ArrayList<Tuple> mapperOutput = (ArrayList<Tuple>) n.getOutput();
-            shuffledOutput.addAll(mapperOutput);
+             shuffledOutput.addAll(mapperOutput);
         }
         Collections.sort(shuffledOutput, new Comparator<Tuple>() {
             @Override
