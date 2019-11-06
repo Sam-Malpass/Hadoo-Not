@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
@@ -36,13 +35,19 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="243.0" prefWidth="640.0">
+            <HBox alignment="CENTER" prefHeight="229.0" prefWidth="640.0">
                <children>
                   <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="400.0" />
                </children>
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="640.0" spacing="475.0">
+               <children>
+                  <Button fx:id="cancel" mnemonicParsing="false" prefWidth="75.0" text="Cancel" />
+                  <Button fx:id="confirm" mnemonicParsing="false" prefWidth="75.0" text="Confirm" />
+               </children>
             </HBox>
          </children>
          <opaqueInsets>
