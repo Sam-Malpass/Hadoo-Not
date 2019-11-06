@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class MainScreenController implements Initializable {
+public class ApplicationWindowController implements Initializable {
 
     /**
      * console holds the TextArea for the console
@@ -38,14 +38,17 @@ public class MainScreenController implements Initializable {
     /**
      * setup says whether a job has been setup
      */
-    private static boolean setup = false;
+    private boolean setup = false;
 
     /**
      * jobParameters holds a list of parameter Strings
      */
-    private static ArrayList<String> jobParameters = new ArrayList<>();
+    private ArrayList<String> jobParameters = new ArrayList<>();
 
-    private static Chain chain = null;
+    /**
+     * chain holds a Chain object that can be executed if setup correctly
+     */
+    private Chain chain = null;
 
     /**
      * Function initialize()
@@ -151,6 +154,8 @@ public class MainScreenController implements Initializable {
         else {
             System.err.println("[ERROR] Job not setup");
         }
+        setup = false;
+        jobParameters = new ArrayList<>();
     }
 
     /**
@@ -227,6 +232,12 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * Function setupChain()
+     * <p>
+     *     Opens the SetupChain window
+     * </p>
+     */
     @FXML
     private void setupChain() {
         Scene tmp = null;
@@ -242,9 +253,9 @@ public class MainScreenController implements Initializable {
         setupStage.setResizable(false);
         setupStage.setTitle("Setup Chain...");
         setupStage.showAndWait();
-        if(!(SetupChainController.getJarPath() == null) && !(SetupChainController.getDataPath() == null) && !(SetupChainController.getClassNames() == null)) {
+        if(!(SetupChainController.getJarPath() == null) && !(SetupChainController.getDataPath() == null) && !(SetupChainController.getClassNames() == null) && !(SetupChainController.getOutputName() == null)) {
             chain = new Chain(SetupChainController.getJarPath(), SetupChainController.getClassNames());
-            chain.setupChain(SetupChainController.getDataPath(), "TESTOut.txt");
+            chain.setupChain(SetupChainController.getDataPath(), SetupChainController.getOutputName());
             setup = true;
         }
     }

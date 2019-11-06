@@ -380,11 +380,9 @@ public class Process {
         }
         System.out.println("[REDUCER] Reducing complete!\n");
 
-        if((chain == 0 || chain > 1) && !outputPath.isEmpty()) {
-            /* OUTPUT */
-            System.out.println("[SYSTEM] Writing output...");
-            writeData(outputPath, task.format(finalOutput));
-        }
+        /* OUTPUT */
+        System.out.println("[SYSTEM] Writing output...");
+        writeData(outputPath, task.format(finalOutput));
     }
 
     /**

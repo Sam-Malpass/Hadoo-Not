@@ -73,7 +73,7 @@ public class Chain {
                 jobChain.get(i).setInput((ArrayList) jobChain.get(i-1).getOutput());
             }
             jobChain.get(i).start(i+1);
-            System.out.println("Job " + (i+1) + " Complete");
+            System.out.println("[SYSTEM] Job " + (i+1) + " Complete!\n");
         }
     }
 }

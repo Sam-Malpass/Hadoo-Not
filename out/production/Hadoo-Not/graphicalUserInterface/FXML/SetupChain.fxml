@@ -15,7 +15,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="61.0" prefWidth="640.0" spacing="10.0">
                <children>
-                  <VBox prefHeight="61.0" prefWidth="645.0">
+                  <VBox prefHeight="61.0" prefWidth="645.0" spacing="2.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                            <children>
@@ -27,6 +27,11 @@
                            <children>
                               <TextField fx:id="dataField" prefWidth="300.0" promptText="Select input file..." />
                               <Button fx:id="browseData" mnemonicParsing="false" onAction="#browseData" text="Browse..." />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="outputField" prefWidth="375.0" promptText="Output file name..." />
                            </children>
                         </HBox>
                      </children>
@@ -49,7 +54,7 @@
                   <HBox alignment="CENTER" prefHeight="36.0" prefWidth="640.0" spacing="10.0">
                      <children>
                         <ComboBox fx:id="comboBox" prefWidth="300.0" promptText="Select Job..." />
-                        <Button fx:id="addJob" mnemonicParsing="false" text="Add Job" onAction="#addJob" />
+                        <Button fx:id="addJob" mnemonicParsing="false" onAction="#addJob" text="Add Job" />
                      </children>
                   </HBox>
                </children>
