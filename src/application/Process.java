@@ -269,21 +269,18 @@ public class Process {
         }
         //Determine block size
         int cores = Runtime.getRuntime().availableProcessors();
-        int numThreads = cores * 2;
+        int numThreads = (cores * 2) - 1;
         this.blockSize = input.size()/numThreads;
 
         /* PREPROCESS */
         ArrayList<ArrayList<Object>> dataChunks = new ArrayList<>();
-        if(chain <= 1) {
-            System.out.println("[PREPROCESSOR] Beginning preprocessing...");
-            ArrayList<Object> data = task.preprocess(input);
-            System.out.println("[PREPROCESSOR] Preprocessing complete!\n");
-            /* SPLIT */
-            dataChunks = split(data);
-        }
-        else{
-            dataChunks = split(input);
-        }
+
+        System.out.println("[PREPROCESSOR] Beginning preprocessing...");
+        ArrayList<Object> data = task.preprocess(input);
+        System.out.println("[PREPROCESSOR] Preprocessing complete!\n");
+
+        /* SPLIT */
+        dataChunks = split(data);
 
 
         /* MAP */
