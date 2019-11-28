@@ -18,6 +18,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import java.io.PrintStream;
@@ -276,13 +277,19 @@ public class ApplicationWindowController implements Initializable {
         }
     }
 
-    public static void drawNode(int xPos, int yPos, int size)
+    public static void drawNode(double xPos, double yPos, double size, Color col)
     {
-        graphicsContext.setFill(Paint.valueOf("Red"));
-        graphicsContext.fillRect(0, 0, size, size);
+        graphicsContext.setFill(col);
+        graphicsContext.fillRect(xPos, yPos, size, size);
     }
 
-    public static void drawConnection(int xPos, int yPos)
+    public static void drawNode(double x, double y, double width, double height, Color col)
+    {
+        graphicsContext.setFill(col);
+        graphicsContext.fillRect(x,y,width, height);
+    }
+
+    public static void drawConnection(double xPos, double yPos)
     {
 
     }

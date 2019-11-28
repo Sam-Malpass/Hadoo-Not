@@ -21,6 +21,8 @@ import java.util.Comparator;
 
 public class Process {
 
+    private InterfaceOutput interfaceOutput = new InterfaceOutput();
+
     /**
      * blockSize holds the number of data entries to be sent to a single mapper node
      */
@@ -271,7 +273,7 @@ public class Process {
         int cores = Runtime.getRuntime().availableProcessors();
         int numThreads = (cores * 2) - 1;
         this.blockSize = input.size()/numThreads;
-
+        interfaceOutput.drawStartNode();
         /* PREPROCESS */
         ArrayList<ArrayList<Object>> dataChunks = new ArrayList<>();
 
@@ -284,6 +286,7 @@ public class Process {
 
 
         /* MAP */
+        interfaceOutput.drawMapperNodes(dataChunks.size());
         System.out.println("[MAPPER] Beginning mapping...");
         for(ArrayList<Object> block : dataChunks) {
             MapNode mapperNode = new MapNode( "MapperNode" + dataChunks.indexOf(block));
@@ -305,6 +308,7 @@ public class Process {
         }
         System.out.println("[MAPPER] Mapping completed!\n");
         /* SHUFFLE/SORT */
+        interfaceOutput.drawSorterNode();
         shuffleSort();
         ArrayList<Object> keySet = generateKeySet();
         partition(keySet);
@@ -315,6 +319,7 @@ public class Process {
         float numCombiners = mapperNodes.size();
         float partitionsPerCombiner = (float) partitionedOutput.size() / numCombiners;
         int partitionCounter = 0;
+        interfaceOutput.drawCombinerNodes((int)numCombiners);
         for (int i = 0; i < numCombiners; i++) {
             ArrayList<ArrayList<Tuple>> combinerInput = new ArrayList<>();
             for(int j = 0; j < partitionsPerCombiner; j++) {
@@ -347,6 +352,7 @@ public class Process {
         float numReducers = mapperNodes.size();
         float tuplesPerReducer = (float) combinerOutput.size() / numReducers;
         int tupleCounter = 0;
+        interfaceOutput.drawReducerNodes((int) numReducers);
         for(int i = 0; i < numReducers; i++) {
             ArrayList<Tuple> reducerInput = new ArrayList<>();
             for(int j = 0; j < tuplesPerReducer; j++) {
@@ -377,6 +383,7 @@ public class Process {
         }
         System.out.println("[REDUCER] Reducing complete!\n");
 
+        interfaceOutput.drawOutputNode();
         /* OUTPUT */
         System.out.println("[SYSTEM] Writing output...");
         writeData(outputPath, task.format(finalOutput));
