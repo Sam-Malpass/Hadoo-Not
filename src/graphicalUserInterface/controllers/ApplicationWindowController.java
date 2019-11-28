@@ -15,8 +15,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import java.io.PrintStream;
 import java.net.URL;
@@ -41,6 +43,9 @@ public class ApplicationWindowController implements Initializable {
      */
     @FXML
     private Canvas canvas;
+    private static double width, height;
+
+    private static GraphicsContext graphicsContext;
 
     /**
      * setup says whether a job has been setup
@@ -71,6 +76,11 @@ public class ApplicationWindowController implements Initializable {
         ps = new PrintStream(new Console(console));
         System.setErr(ps);
         System.setOut(ps);
+        width = canvas.getWidth();
+        height = canvas.getHeight();
+        graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.setFill(Paint.valueOf("Grey"));
+        graphicsContext.fillRect(0,0,width,height);
     }
 
     /**
@@ -264,5 +274,30 @@ public class ApplicationWindowController implements Initializable {
             setup = true;
             System.out.println("[SYSTEM] Chain setup");
         }
+    }
+
+    public static void drawNode(int xPos, int yPos, int size)
+    {
+        graphicsContext.setFill(Paint.valueOf("Red"));
+        graphicsContext.fillRect(0, 0, size, size);
+    }
+
+    public static void drawConnection(int xPos, int yPos)
+    {
+
+    }
+
+    public static void clearCanvas()
+    {
+        graphicsContext.clearRect(0,0, width, height);
+    }
+
+
+    public static double getWidth() {
+        return width;
+    }
+
+    public static double getHeight() {
+        return height;
     }
 }
