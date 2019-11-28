@@ -1,7 +1,7 @@
 /**
  * MainScreenController
  * @author Sam Malpass
- * @version 0.0.9
+ * @version 0.1.0
  * @since 0.0.3
  */
 package graphicalUserInterface.controllers;
@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
@@ -34,6 +35,12 @@ public class ApplicationWindowController implements Initializable {
      * ps holds the PrintStream object
      */
     private PrintStream ps;
+
+    /**
+     * canvas holds the graphical drawing plane
+     */
+    @FXML
+    private Canvas canvas;
 
     /**
      * setup says whether a job has been setup
