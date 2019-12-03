@@ -23,6 +23,8 @@ public class Process {
 
     private InterfaceOutput interfaceOutput = new InterfaceOutput();
 
+    private boolean slowDown = true;
+
     /**
      * blockSize holds the number of data entries to be sent to a single mapper node
      */
@@ -264,6 +266,7 @@ public class Process {
      * @param chain determines the position in the chain, 0 for singular job
      */
     public void start(int chain) {
+        interfaceOutput.resetCanvas();
         Node.setup(task);
         /* READ IN */
         if(chain <= 1) {
@@ -274,6 +277,11 @@ public class Process {
         int numThreads = (cores * 2) - 1;
         this.blockSize = input.size()/numThreads;
         interfaceOutput.drawStartNode();
+        try {
+            java.util.concurrent.TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         /* PREPROCESS */
         ArrayList<ArrayList<Object>> dataChunks = new ArrayList<>();
 
@@ -284,9 +292,23 @@ public class Process {
         /* SPLIT */
         dataChunks = split(data);
 
-
+        interfaceOutput.drawStartToMap(dataChunks.size());
+        if(slowDown) {
+            try {
+                java.util.concurrent.TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         /* MAP */
         interfaceOutput.drawMapperNodes(dataChunks.size());
+        if(slowDown) {
+            try {
+                java.util.concurrent.TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         System.out.println("[MAPPER] Beginning mapping...");
         for(ArrayList<Object> block : dataChunks) {
             MapNode mapperNode = new MapNode( "MapperNode" + dataChunks.indexOf(block));
@@ -307,8 +329,23 @@ public class Process {
             }
         }
         System.out.println("[MAPPER] Mapping completed!\n");
+        interfaceOutput.drawMapToSort(mapperNodes.size());
+        if(slowDown) {
+            try {
+                java.util.concurrent.TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         /* SHUFFLE/SORT */
         interfaceOutput.drawSorterNode();
+        if(slowDown) {
+            try {
+                java.util.concurrent.TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         shuffleSort();
         ArrayList<Object> keySet = generateKeySet();
         partition(keySet);
@@ -319,7 +356,22 @@ public class Process {
         float numCombiners = mapperNodes.size();
         float partitionsPerCombiner = (float) partitionedOutput.size() / numCombiners;
         int partitionCounter = 0;
+        interfaceOutput.drawSorterToCombiner((int)numCombiners);
+        if(slowDown) {
+            try {
+                java.util.concurrent.TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         interfaceOutput.drawCombinerNodes((int)numCombiners);
+        if(slowDown) {
+            try {
+                java.util.concurrent.TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         for (int i = 0; i < numCombiners; i++) {
             ArrayList<ArrayList<Tuple>> combinerInput = new ArrayList<>();
             for(int j = 0; j < partitionsPerCombiner; j++) {
@@ -345,14 +397,36 @@ public class Process {
             }
         }
         System.out.println("[COMBINER] Combining Complete!\n");
-
+        interfaceOutput.drawCombinerOut((int)numCombiners);
+        if(slowDown) {
+            try {
+                java.util.concurrent.TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         /* REDUCE */
         System.out.println("[REDUCER] Beginning reducing...");
         percentageCalc = 0;
         float numReducers = mapperNodes.size();
         float tuplesPerReducer = (float) combinerOutput.size() / numReducers;
         int tupleCounter = 0;
+        interfaceOutput.drawReducerIn((int)numReducers);
+        if(slowDown) {
+            try {
+                java.util.concurrent.TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         interfaceOutput.drawReducerNodes((int) numReducers);
+        if(slowDown) {
+            try {
+                java.util.concurrent.TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         for(int i = 0; i < numReducers; i++) {
             ArrayList<Tuple> reducerInput = new ArrayList<>();
             for(int j = 0; j < tuplesPerReducer; j++) {
@@ -382,7 +456,14 @@ public class Process {
             finalOutput.addAll((ArrayList<Tuple>) n.getOutput());
         }
         System.out.println("[REDUCER] Reducing complete!\n");
-
+        interfaceOutput.drawReducerOut((int)numReducers);
+        if(slowDown) {
+            try {
+                java.util.concurrent.TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         interfaceOutput.drawOutputNode();
         /* OUTPUT */
         System.out.println("[SYSTEM] Writing output...");

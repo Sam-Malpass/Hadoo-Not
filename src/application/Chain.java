@@ -60,7 +60,7 @@ public class Chain {
      *     Runs all jobs in sequence, using the output of the previous job as the input to the next
      * </p>
      */
-    public void execute() {
+    public void execute()  {
         for(int i = 0; i < jobChain.size(); i++) {
             if(i == 0) {
                 jobChain.get(i).setup(inputPath, outputPath);

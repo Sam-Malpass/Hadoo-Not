@@ -277,26 +277,47 @@ public class ApplicationWindowController implements Initializable {
         }
     }
 
-    public static void drawNode(double xPos, double yPos, double size, Color col)
+    public static void drawNode(double xPos, double yPos, double size, Color col,String name)
     {
         graphicsContext.setFill(col);
         graphicsContext.fillRect(xPos, yPos, size, size);
+
+
+        graphicsContext.setFill(Color.BLACK);
+        graphicsContext.strokeText(name, xPos+(size/2)-40, yPos+(size/2));
+
+        graphicsContext.strokeLine(xPos, yPos, xPos+size, yPos);
+        graphicsContext.strokeLine(xPos, yPos, xPos, yPos+size);
+        graphicsContext.strokeLine(xPos+size, yPos, xPos+size, yPos+size);
+        graphicsContext.strokeLine(xPos, yPos+size, xPos+size, yPos+size);
     }
 
-    public static void drawNode(double x, double y, double width, double height, Color col)
+    public static void drawNode(double x, double y, double width, double height, Color col, String name)
     {
         graphicsContext.setFill(col);
         graphicsContext.fillRect(x,y,width, height);
+
+        graphicsContext.setFill(Color.BLACK);
+        graphicsContext.strokeText(name,x+(width/2)-25, y+(height/2)+5);
+        graphicsContext.strokeLine(x, y, x+width, y);
+        graphicsContext.strokeLine(x, y, x, y+height);
+        graphicsContext.strokeLine(x+width, y, x+width, y+height);
+        graphicsContext.strokeLine(x, y+height, x+width, y+height);
     }
 
-    public static void drawConnection(double xPos, double yPos)
+    public static void drawConnection(double startx, double starty, double endx, double endy)
     {
-
+        graphicsContext.setFill(Color.BLACK);
+        graphicsContext.strokeLine(startx, starty, endx, endy);
     }
 
     public static void clearCanvas()
     {
         graphicsContext.clearRect(0,0, width, height);
+        graphicsContext.setFill(Color.DARKGRAY);
+        graphicsContext.fillRect(0,0, width, height);
+
+
     }
 
 
