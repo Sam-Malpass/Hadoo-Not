@@ -152,6 +152,12 @@ public class SetupChainController implements Initializable {
         }
         if(tmp == 3) {
             Stage tmpS = (Stage) jarField.getScene().getWindow();
+            if(drawProcess.isSelected()) {
+                toggleDraw = true;
+            }
+            if(slowDraw.isSelected()) {
+                toggleSlow = true;
+            }
             tmpS.close();
         }
     }
