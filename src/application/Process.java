@@ -23,7 +23,7 @@ public class Process {
 
     private InterfaceOutput interfaceOutput = new InterfaceOutput();
 
-    private boolean slowDown = true;
+    private static boolean slowDown = false;
 
     /**
      * blockSize holds the number of data entries to be sent to a single mapper node
@@ -471,6 +471,144 @@ public class Process {
     }
 
     /**
+     * Function start()
+     * <p>
+     *     Runs the all the stages of the job
+     *     1. Sets up the Job object
+     *     2. Reads in the data
+     *     3. Runs the Preprocessor
+     *     4. Runs the map stage on a set number of nodes
+     *     5. Shuffle/Sort the results from the mapper nodes
+     *     6. Run the reduce stage on a number of nodes
+     *     7. Output the results to a file
+     * </p>
+     * @param chain determines the position in the chain, 0 for singular job
+     */
+    public void start(int chain, boolean tog) {
+        Node.setup(task);
+        /* READ IN */
+        if(chain <= 1) {
+            input = readData(inputPath);
+        }
+        //Determine block size
+        int cores = Runtime.getRuntime().availableProcessors();
+        int numThreads = cores * 2;
+        this.blockSize = input.size()/numThreads;
+
+        /* PREPROCESS */
+        ArrayList<ArrayList<Object>> dataChunks = new ArrayList<>();
+        if(chain <= 1) {
+            System.out.println("[PREPROCESSOR] Beginning preprocessing...");
+            ArrayList<Object> data = task.preprocess(input);
+            System.out.println("[PREPROCESSOR] Preprocessing complete!\n");
+            /* SPLIT */
+            dataChunks = split(data);
+        }
+        else{
+            dataChunks = split(input);
+        }
+
+
+        /* MAP */
+        System.out.println("[MAPPER] Beginning mapping...");
+        for(ArrayList<Object> block : dataChunks) {
+            MapNode mapperNode = new MapNode( "MapperNode" + dataChunks.indexOf(block));
+            mapperNode.setInput(block);
+            mapperNode.start();
+            mapperNodes.add(mapperNode);
+        }
+        //Join all executing threads
+        float percentageCalc = 1;
+        for(Node n : mapperNodes) {
+            try {
+                n.getThread().join();
+                System.out.println("[MAPPER] Map at " + percentageCalc/mapperNodes.size()*100 + "% Complete");
+                percentageCalc++;
+            }
+            catch (Exception e) {
+                System.err.println("[ERROR] Failed to join mapper thread with ID: " + n.getThreadID());
+            }
+        }
+        System.out.println("[MAPPER] Mapping completed!\n");
+        /* SHUFFLE/SORT */
+        shuffleSort();
+        ArrayList<Object> keySet = generateKeySet();
+        partition(keySet);
+
+        /*COMBINER*/
+        System.out.println("[COMBINER] Beginning Combining...");
+        percentageCalc = 0;
+        float numCombiners = mapperNodes.size();
+        float partitionsPerCombiner = (float) partitionedOutput.size() / numCombiners;
+        int partitionCounter = 0;
+        for (int i = 0; i < numCombiners; i++) {
+            ArrayList<ArrayList<Tuple>> combinerInput = new ArrayList<>();
+            for(int j = 0; j < partitionsPerCombiner; j++) {
+                if(partitionCounter == partitionedOutput.size()) {
+                    break;
+                }
+                combinerInput.add(partitionedOutput.get(partitionCounter));
+                partitionCounter++;
+            }
+            CombinerNode combinerNode = new CombinerNode("CombinerNode" + i);
+            combinerNode.start(combinerInput);
+            combinerNodes.add(combinerNode);
+        }
+        for(Node n : combinerNodes) {
+            try {
+                n.getThread().join();
+                combinerOutput.addAll((ArrayList<Tuple>)n.getOutput());
+                System.out.println("[COMBINER] Combine at: " + percentageCalc/combinerNodes.size()*100 + "% Complete");
+                percentageCalc++;
+            }
+            catch (Exception e) {
+                System.err.println("[COMBINER] Failed to join reducer thread with ID: " + n.getThreadID());
+            }
+        }
+        System.out.println("[COMBINER] Combining Complete!\n");
+
+        /* REDUCE */
+        System.out.println("[REDUCER] Beginning reducing...");
+        percentageCalc = 0;
+        float numReducers = mapperNodes.size();
+        float tuplesPerReducer = (float) combinerOutput.size() / numReducers;
+        int tupleCounter = 0;
+        for(int i = 0; i < numReducers; i++) {
+            ArrayList<Tuple> reducerInput = new ArrayList<>();
+            for(int j = 0; j < tuplesPerReducer; j++) {
+                if(tupleCounter == combinerOutput.size()) {
+                    break;
+                }
+                reducerInput.add(combinerOutput.get(tupleCounter));
+                tupleCounter++;
+            }
+            ReduceNode reducerNode = new ReduceNode("ReducerNode" + i);
+            reducerNode.start(reducerInput);
+            reducerNodes.add(reducerNode);
+        }
+        //Join all executing threads
+        for(Node n : reducerNodes) {
+            try {
+                n.getThread().join();
+                System.out.println("[REDUCER] Reduce at: " + percentageCalc/reducerNodes.size()*100 + "% Complete");
+                percentageCalc++;
+            }
+            catch (Exception e) {
+                System.err.println("[ERROR] Failed to join reducer thread with ID: " + n.getThreadID());
+            }
+        }
+        //Get all results
+        for(Node n : reducerNodes) {
+            finalOutput.addAll((ArrayList<Tuple>) n.getOutput());
+        }
+        System.out.println("[REDUCER] Reducing complete!\n");
+
+        /* OUTPUT */
+        System.out.println("[SYSTEM] Writing output...");
+        writeData(outputPath, task.format(finalOutput));
+    }
+
+    /**
      * Function setInput()
      * <p>
      *     Set the input to the passed value
@@ -490,6 +628,11 @@ public class Process {
      */
     public Object getOutput() {
         return finalOutput;
+    }
+
+    public static void setSlowDown(boolean val)
+    {
+        slowDown = val;
     }
 }
 

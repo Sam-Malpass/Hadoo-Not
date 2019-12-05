@@ -53,6 +53,8 @@ public class ApplicationWindowController implements Initializable {
      */
     private boolean setup = false;
 
+    private boolean enableDraw;
+
     /**
      * jobParameters holds a list of parameter Strings
      */
@@ -112,6 +114,8 @@ public class ApplicationWindowController implements Initializable {
             jobParameters.add(SetupJobController.getClassName());
             jobParameters.add(SetupJobController.getData());
             jobParameters.add(SetupJobController.getOutput());
+            enableDraw = SetupJobController.isToggleDraw();
+            Process.setSlowDown(SetupJobController.isSlowToggle());
             System.out.println("[SYSTEM] Job parameters setup");
         }
     }
@@ -131,7 +135,12 @@ public class ApplicationWindowController implements Initializable {
                     long startTime = System.nanoTime();
                     Process p = new Process(jobParameters.get(0), jobParameters.get(1).replace(".class", ""));
                     p.setup(jobParameters.get(2), jobParameters.get(3));
-                    p.start(0);
+                    if(enableDraw) {
+                        p.start(0);
+                    }
+                    else{
+                        p.start(0, true);
+                    }
                     jobParameters = new ArrayList<>();
                     long endTime = System.nanoTime();
                     System.out.println("[SYSTEM] Job execution completed in " + (endTime - startTime) / 1000000 + "ms");
