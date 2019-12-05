@@ -153,7 +153,9 @@ public class ApplicationWindowController implements Initializable {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    Process.setSlowDown(SetupChainController.isToggleSlow());
                     long startTime = System.nanoTime();
+                    chain.setToggleDraw(SetupChainController.isToggleDraw());
                     chain.execute();
                     long endTime = System.nanoTime();
                     System.out.println("[SYSTEM] Job execution completed in " + (endTime - startTime) / 1000000 + "ms");

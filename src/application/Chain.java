@@ -25,6 +25,8 @@ public class Chain {
      */
     private String outputPath;
 
+    private boolean toggleDraw = false;
+
     /**
      * Constructor with arguments
      * <p>
@@ -73,8 +75,17 @@ public class Chain {
             else {
                 jobChain.get(i).setInput((ArrayList) jobChain.get(i-1).getOutput());
             } */
-            jobChain.get(i).start(i+1);
+            if(toggleDraw) {
+                jobChain.get(i).start(i + 1, true);
+            }
+            else{
+                jobChain.get(i).start(i + 1);
+            }
             System.out.println("[SYSTEM] Job " + (i+1) + " Complete!\n");
         }
+    }
+
+    public void setToggleDraw(boolean val) {
+        toggleDraw = val;
     }
 }
