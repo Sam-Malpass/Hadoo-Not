@@ -1,7 +1,7 @@
 /**
  * Chain
  * @author Sam Malpass
- * @version 0.0.9
+ * @version 0.1.0
  * @since 0.0.8
  */
 package application;
@@ -24,6 +24,8 @@ public class Chain {
      * outputPath holds the location of the output data
      */
     private String outputPath;
+
+    private boolean toggleDraw = false;
 
     /**
      * Constructor with arguments
@@ -60,7 +62,7 @@ public class Chain {
      *     Runs all jobs in sequence, using the output of the previous job as the input to the next
      * </p>
      */
-    public void execute() {
+    public void execute()  {
         for(int i = 0; i < jobChain.size(); i++) {
             if(i == 0) {
                 jobChain.get(i).setup(inputPath, outputPath);
@@ -73,8 +75,17 @@ public class Chain {
             else {
                 jobChain.get(i).setInput((ArrayList) jobChain.get(i-1).getOutput());
             } */
-            jobChain.get(i).start(i+1);
+            if(toggleDraw) {
+                jobChain.get(i).start(i + 1, true);
+            }
+            else{
+                jobChain.get(i).start(i + 1);
+            }
             System.out.println("[SYSTEM] Job " + (i+1) + " Complete!\n");
         }
+    }
+
+    public void setToggleDraw(boolean val) {
+        toggleDraw = val;
     }
 }

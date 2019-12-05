@@ -1,7 +1,7 @@
 /**
  * MainScreenController
  * @author Sam Malpass
- * @version 0.0.9
+ * @version 0.1.0
  * @since 0.0.3
  */
 package graphicalUserInterface.controllers;
@@ -14,8 +14,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import java.io.PrintStream;
 import java.net.URL;
@@ -36,9 +40,20 @@ public class ApplicationWindowController implements Initializable {
     private PrintStream ps;
 
     /**
+     * canvas holds the graphical drawing plane
+     */
+    @FXML
+    private Canvas canvas;
+    private static double width, height;
+
+    private static GraphicsContext graphicsContext;
+
+    /**
      * setup says whether a job has been setup
      */
     private boolean setup = false;
+
+    private boolean enableDraw;
 
     /**
      * jobParameters holds a list of parameter Strings
@@ -64,6 +79,11 @@ public class ApplicationWindowController implements Initializable {
         ps = new PrintStream(new Console(console));
         System.setErr(ps);
         System.setOut(ps);
+        width = canvas.getWidth();
+        height = canvas.getHeight();
+        graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.setFill(Paint.valueOf("Grey"));
+        graphicsContext.fillRect(0,0,width,height);
     }
 
     /**
@@ -94,6 +114,8 @@ public class ApplicationWindowController implements Initializable {
             jobParameters.add(SetupJobController.getClassName());
             jobParameters.add(SetupJobController.getData());
             jobParameters.add(SetupJobController.getOutput());
+            enableDraw = SetupJobController.isToggleDraw();
+            Process.setSlowDown(SetupJobController.isSlowToggle());
             System.out.println("[SYSTEM] Job parameters setup");
         }
     }
@@ -113,7 +135,12 @@ public class ApplicationWindowController implements Initializable {
                     long startTime = System.nanoTime();
                     Process p = new Process(jobParameters.get(0), jobParameters.get(1).replace(".class", ""));
                     p.setup(jobParameters.get(2), jobParameters.get(3));
-                    p.start(0);
+                    if(enableDraw) {
+                        p.start(0);
+                    }
+                    else{
+                        p.start(0, true);
+                    }
                     jobParameters = new ArrayList<>();
                     long endTime = System.nanoTime();
                     System.out.println("[SYSTEM] Job execution completed in " + (endTime - startTime) / 1000000 + "ms");
@@ -126,7 +153,9 @@ public class ApplicationWindowController implements Initializable {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    Process.setSlowDown(SetupChainController.isToggleSlow());
                     long startTime = System.nanoTime();
+                    chain.setToggleDraw(SetupChainController.isToggleDraw());
                     chain.execute();
                     long endTime = System.nanoTime();
                     System.out.println("[SYSTEM] Job execution completed in " + (endTime - startTime) / 1000000 + "ms");
@@ -257,5 +286,57 @@ public class ApplicationWindowController implements Initializable {
             setup = true;
             System.out.println("[SYSTEM] Chain setup");
         }
+    }
+
+    public static void drawNode(double xPos, double yPos, double size, Color col,String name)
+    {
+        graphicsContext.setFill(col);
+        graphicsContext.fillRect(xPos, yPos, size, size);
+
+
+        graphicsContext.setFill(Color.BLACK);
+        graphicsContext.strokeText(name, xPos+(size/2)-40, yPos+(size/2));
+
+        graphicsContext.strokeLine(xPos, yPos, xPos+size, yPos);
+        graphicsContext.strokeLine(xPos, yPos, xPos, yPos+size);
+        graphicsContext.strokeLine(xPos+size, yPos, xPos+size, yPos+size);
+        graphicsContext.strokeLine(xPos, yPos+size, xPos+size, yPos+size);
+    }
+
+    public static void drawNode(double x, double y, double width, double height, Color col, String name)
+    {
+        graphicsContext.setFill(col);
+        graphicsContext.fillRect(x,y,width, height);
+
+        graphicsContext.setFill(Color.BLACK);
+        graphicsContext.strokeText(name,x+(width/2)-25, y+(height/2)+5);
+        graphicsContext.strokeLine(x, y, x+width, y);
+        graphicsContext.strokeLine(x, y, x, y+height);
+        graphicsContext.strokeLine(x+width, y, x+width, y+height);
+        graphicsContext.strokeLine(x, y+height, x+width, y+height);
+    }
+
+    public static void drawConnection(double startx, double starty, double endx, double endy)
+    {
+        graphicsContext.setFill(Color.BLACK);
+        graphicsContext.strokeLine(startx, starty, endx, endy);
+    }
+
+    public static void clearCanvas()
+    {
+        graphicsContext.clearRect(0,0, width, height);
+        graphicsContext.setFill(Color.DARKGRAY);
+        graphicsContext.fillRect(0,0, width, height);
+
+
+    }
+
+
+    public static double getWidth() {
+        return width;
+    }
+
+    public static double getHeight() {
+        return height;
     }
 }

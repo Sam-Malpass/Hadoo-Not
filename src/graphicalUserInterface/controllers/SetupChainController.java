@@ -1,7 +1,7 @@
 /**
  * SetupChainController
  * @author Sam Malpass
- * @version 0.0.9
+ * @version 0.1.0
  * @since 0.0.8
  */
 package graphicalUserInterface.controllers;
@@ -10,6 +10,7 @@ import fileHandler.FileHandler;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -17,6 +18,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SetupChainController implements Initializable {
@@ -26,6 +28,16 @@ public class SetupChainController implements Initializable {
      */
     @FXML
     private TextField jarField;
+
+    @FXML
+    private CheckBox drawProcess;
+
+    private static boolean toggleDraw;
+
+    @FXML
+    private CheckBox slowDraw;
+
+    private static boolean toggleSlow;
 
     /**
      * jarPath holds the file path to the JAR as a String
@@ -82,6 +94,8 @@ public class SetupChainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         classNames = new ArrayList<>();
+        toggleDraw = false;
+        toggleSlow = false;
     }
 
     /**
@@ -138,6 +152,12 @@ public class SetupChainController implements Initializable {
         }
         if(tmp == 3) {
             Stage tmpS = (Stage) jarField.getScene().getWindow();
+            if(drawProcess.isSelected()) {
+                toggleDraw = true;
+            }
+            if(slowDraw.isSelected()) {
+                toggleSlow = true;
+            }
             tmpS.close();
         }
     }
@@ -228,5 +248,13 @@ public class SetupChainController implements Initializable {
      */
     public static String getOutputName() {
         return outputName;
+    }
+
+    public static boolean isToggleDraw() {
+        return toggleDraw;
+    }
+
+    public static boolean isToggleSlow(){
+        return toggleSlow;
     }
 }

@@ -1,7 +1,7 @@
 /**
  * SetupWindowController
  * @author Sam Malpass
- * @version 0.0.9
+ * @version 0.1.0
  * @since 0.0.3
  */
 package graphicalUserInterface.controllers;
@@ -10,6 +10,7 @@ import fileHandler.FileHandler;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -18,6 +19,22 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SetupJobController implements Initializable {
+
+    /**
+     * toggleDrawing holds the toggleDrawing check box
+     */
+    @FXML
+    private CheckBox toggleDrawing;
+
+    private static boolean toggleDraw;
+
+    /**
+     * slowDraw holds the slowDraw check box
+     */
+    @FXML
+    private CheckBox slowDraw;
+
+    private static boolean slowToggle;
 
     /**
      * jarField is the TextField for JAR path
@@ -82,6 +99,8 @@ public class SetupJobController implements Initializable {
         className = null;
         dataFile = null;
         output = null;
+        toggleDraw = false;
+        slowToggle = false;
         return;
     }
 
@@ -138,6 +157,16 @@ public class SetupJobController implements Initializable {
      */
     public static boolean getSetup() {
         return setup;
+    }
+
+    public static boolean isToggleDraw()
+    {
+        return toggleDraw;
+    }
+
+    public static boolean isSlowToggle()
+    {
+        return slowToggle;
     }
 
     /**
@@ -202,6 +231,14 @@ public class SetupJobController implements Initializable {
         }
         if(!outputName.getText().isEmpty()) {
             output = outputName.getText();
+        }
+        if(toggleDrawing.isSelected())
+        {
+            toggleDraw = true;
+        }
+        if(slowDraw.isSelected())
+        {
+            slowToggle = true;
         }
         if(jar != null && className != null && dataFile != null && output != null) {
             setup = true;
